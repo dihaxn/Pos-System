@@ -18,15 +18,7 @@ export default defineConfig({
   build: {
     target: 'es2015',
     minify: 'terser',
-    sourcemap: false,
-    rollupOptions: {
-      external: [],
-      output: {
-        manualChunks: {
-          'mui': ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled']
-        }
-      }
-    }
+    sourcemap: false
   },
   test: {
     globals: true,

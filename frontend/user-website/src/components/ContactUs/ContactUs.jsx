@@ -1,16 +1,6 @@
 import { useState } from 'react';
 import { AiFillMail, AiFillPhone, AiOutlineComment } from "react-icons/ai";
 import { BsFacebook } from "react-icons/bs";
-import { 
-    InputLabel, 
-    FormHelperText, 
-    FormControl, 
-    Select, 
-    TextField, 
-    MenuItem, 
-    Button, 
-    Box 
-} from '@mui/material';
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -23,43 +13,50 @@ const ContactUs = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const txtStyle = {
-    "& label.Mui-focused": { color: "gray", backgroundColor: "transparent" },
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": { borderColor: "gray" },
-      "&:hover fieldset": { borderColor: "gray" },
-      "&.Mui-focused fieldset": { borderColor: "gray" },
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ""
+      }));
     }
   };
 
-  const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-    setErrors({ ...errors, [event.target.name]: "" });
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.name.trim()) newErrors.name = "Name is required";
+    if (!formData.email.trim()) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email is invalid";
+    if (!formData.phone.trim()) newErrors.phone = "Phone is required";
+    if (!formData.outlet.trim()) newErrors.outlet = "Outlet is required";
+    if (!formData.category) newErrors.category = "Category is required";
+    if (!formData.message.trim()) newErrors.message = "Message is required";
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    let newErrors = {};
-
-    if (!formData.name) newErrors.name = "Please fill this!";
-    if (!formData.email) newErrors.email = "Please fill this!";
-    if (!formData.category) newErrors.category = "Please select a category!";
-    if (!formData.message) newErrors.message = "Please fill this!";
-
-    if (formData.phone && !/^[0][0-9]{9}$/.test(formData.phone)) {
-      newErrors.phone = "Phone number must start with 0 and be 10 digits long!";
-    }
-
-    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Enter a valid email address!";
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-    } else {
-      console.log("Form submitted:", formData);
-      alert("Form submitted successfully!");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!validateForm()) return;
+    
+    setIsSubmitting(true);
+    
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       // Reset form
       setFormData({
         name: "",
@@ -69,126 +66,176 @@ const ContactUs = () => {
         category: "",
         message: ""
       });
+      
+      alert("Message sent successfully!");
+    } catch (error) {
+      alert("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-      <div>
-        <div className="flex flex-col md:flex-row justify-center items-start p-10 mt-10 mx-20 rounded-lg bg-gray-200 border border-gray-300 shadow-lg shadow-gray-200">
-          {/* Left Section */}
-          <div className="md:w-1/2 pr-8">
-            <h1 className="text-4xl font-bold text-gray-700">We're Ready To Help You!</h1>
-            <p className="mt-4 text-gray-500">
-              We’re here to help! Fill out the form or reach us via email or phone.
-              Our Customer Care Team is available to help you get the best experience.
-            </p>
-            <div className="mt-6 space-y-4">
-              <p className="flex items-center text-gray-500"><AiFillMail className="mr-2" /> littlelanka@gmail.com</p>
-              <p className="flex items-center text-gray-500"><AiFillPhone className="mr-2" /> 071 6767670</p>
-              <p className="flex items-center text-gray-500"><AiOutlineComment className="mr-2" /> Chat with us</p>
-              <p className="flex items-center text-gray-500"><BsFacebook className="mr-2" /> Search us</p>
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Left Section - Contact Info */}
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Get in Touch</h2>
+              <div className="space-y-6">
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0">
+                    <AiFillMail className="h-6 w-6 text-[#F4952C]" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900">Email</h3>
+                    <p className="text-gray-600">info@littlelanka.com</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0">
+                    <AiFillPhone className="h-6 w-6 text-[#F4952C]" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900">Phone</h3>
+                    <p className="text-gray-600">+94 11 234 5678</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0">
+                    <BsFacebook className="h-6 w-6 text-[#F4952C]" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900">Social Media</h3>
+                    <p className="text-gray-600">Follow us on Facebook</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Right Section */}
-          <div className="md:w-1/2 w-full">
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <TextField
-                  label="Name"
-                  name="name"
-                  value={formData.name}
+          {/* Right Section - Contact Form */}
+          <div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Name *</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F4952C] focus:border-transparent ${
+                      errors.name ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="Your full name"
+                  />
+                  {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F4952C] focus:border-transparent ${
+                      errors.email ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="your.email@example.com"
+                  />
+                  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone *</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F4952C] focus:border-transparent ${
+                      errors.phone ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="+94 77 123 4567"
+                  />
+                  {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Outlet *</label>
+                  <input
+                    type="text"
+                    name="outlet"
+                    value={formData.outlet}
+                    onChange={handleChange}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F4952C] focus:border-transparent ${
+                      errors.outlet ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="Outlet name"
+                  />
+                  {errors.outlet && <p className="text-red-500 text-sm mt-1">{errors.outlet}</p>}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+                <select
+                  name="category"
+                  value={formData.category}
                   onChange={handleChange}
-                  required
-                  fullWidth
-                  className="!bg-gray-100 !rounded-sm"
-                  sx={txtStyle}
-                  error={!!errors.name}
-                  helperText={errors.name}
-              />
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F4952C] focus:border-transparent ${
+                    errors.category ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                >
+                  <option value="">Select a category</option>
+                  <option value="general">General Inquiry</option>
+                  <option value="suggestion">Suggestion</option>
+                  <option value="request">Request</option>
+                  <option value="complain">Complaint</option>
+                </select>
+                {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category}</p>}
+              </div>
 
-              <TextField
-                  label="Email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  fullWidth
-                  className="!bg-gray-100 !rounded-sm"
-                  sx={txtStyle}
-                  error={!!errors.email}
-                  helperText={errors.email}
-                  type="email"
-              />
-
-              <TextField
-                  label="Phone Number (optional)"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  fullWidth
-                  className="!bg-gray-100 !rounded-sm"
-                  sx={txtStyle}
-                  inputProps={{ inputMode: "numeric", pattern: "[0-9]*", maxLength: 10 }}
-                  error={!!errors.phone}
-                  helperText={errors.phone}
-              />
-
-              <TextField
-                  label="Outlet"
-                  name="outlet"
-                  value={formData.outlet}
-                  onChange={handleChange}
-                  fullWidth
-                  className="!bg-gray-100 !rounded-sm"
-                  sx={txtStyle}
-              />
-
-              <Box sx={{ minWidth: 120 }} className="!bg-gray-100 !rounded-sm col-span-2">
-                <FormControl fullWidth error={!!errors.category}>
-                  <InputLabel id="category-label">Category *</InputLabel>
-                  <Select
-                      labelId="category-label"
-                      id="category"
-                      name="category"
-                      value={formData.category}
-                      onChange={handleChange}
-                      label="Category *"
-                  >
-                    <MenuItem value="suggestion">Suggestion</MenuItem>
-                    <MenuItem value="request">Request</MenuItem>
-                    <MenuItem value="complain">Complain</MenuItem>
-                  </Select>
-                  <FormHelperText>{errors.category}</FormHelperText>
-                </FormControl>
-              </Box>
-
-              <TextField
-                  label="Message"
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Message *</label>
+                <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  required
-                  fullWidth
-                  multiline
-                  rows={4}
-                  className="col-span-2 !bg-gray-100 !rounded-sm"
-                  sx={txtStyle}
-                  error={!!errors.message}
-                  helperText={errors.message}
-              />
+                  rows={6}
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F4952C] focus:border-transparent ${
+                    errors.message ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="Tell us how we can help you..."
+                />
+                {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
+              </div>
 
-              <Button
-                  type="submit"
-                  variant="contained"
-                  fullWidth
-                  className="!bg-orange-400 hover:!bg-orange-500 text-white py-2 col-span-2"
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-[#F4952C] text-white py-3 px-6 rounded-lg font-medium hover:bg-[#e08520] focus:outline-none focus:ring-2 focus:ring-[#F4952C] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                SUBMIT
-              </Button>
+                {isSubmitting ? 'Sending...' : 'Send Message'}
+              </button>
             </form>
           </div>
         </div>
       </div>
+    </div>
   );
 };
 
