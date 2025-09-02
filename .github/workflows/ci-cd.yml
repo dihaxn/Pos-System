@@ -28,12 +28,15 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
           cache-dependency-path: frontend/${{ matrix.app }}/package.json
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         run: |
           cd frontend/${{ matrix.app }}
           rm -rf node_modules package-lock.json
-          npm install --legacy-peer-deps
+          npm cache clean --force
+          npm install --legacy-peer-deps --verbose
+          npm list @mui/material || echo "Material-UI not found"
 
       - name: Run linting
         run: |
