@@ -151,6 +151,10 @@ jobs:
   # Security Scan
   security-scan:
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
 
     steps:
       - name: Checkout code
@@ -165,7 +169,7 @@ jobs:
           output: "trivy-results.sarif"
 
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
           sarif_file: "trivy-results.sarif"
@@ -195,7 +199,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkup@v4
+        uses: actions/checkout@v4
 
       - name: Deploy to production
         run: |
