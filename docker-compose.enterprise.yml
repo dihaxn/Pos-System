@@ -1,0 +1,357 @@
+version: '3.8'
+
+services:
+  # Infrastructure Services
+  postgres:
+    image: postgres:15-alpine
+    container_name: lloms-postgres
+    environment:
+      POSTGRES_DB: lloms_product_db
+      POSTGRES_USER: lloms_user
+      POSTGRES_PASSWORD: lloms_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./services/product-service/src/main/resources/db/migration:/docker-entrypoint-initdb.d
+    networks:
+      - lloms-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U lloms_user -d lloms_product_db" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  mysql:
+    image: mysql:8.0
+    container_name: lloms-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: lloms_user_db
+      MYSQL_USER: lloms_user
+      MYSQL_PASSWORD: lloms_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - lloms-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  mongodb:
+    image: mongo:7.0
+    container_name: lloms-mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: lloms_user
+      MONGO_INITDB_ROOT_PASSWORD: lloms_password
+      MONGO_INITDB_DATABASE: lloms_outlet_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - lloms-network
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: lloms-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - lloms-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: lloms-kafka
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    networks:
+      - lloms-network
+    healthcheck:
+      test: [ "CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: lloms-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - lloms-network
+
+  # Service Discovery
+  eureka:
+    image: lloms/discovery-service:latest
+    container_name: lloms-eureka
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - lloms-network
+    depends_on:
+      - postgres
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # API Gateway
+  api-gateway:
+    image: lloms/api-gateway:latest
+    container_name: lloms-api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+    networks:
+      - lloms-network
+    depends_on:
+      - eureka
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Microservices
+  product-service:
+    image: lloms/product-service:latest
+    container_name: lloms-product-service
+    ports:
+      - "8087:8087"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/lloms_product_db
+      SPRING_DATASOURCE_USERNAME: lloms_user
+      SPRING_DATASOURCE_PASSWORD: lloms_password
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+    networks:
+      - lloms-network
+    depends_on:
+      - postgres
+      - redis
+      - eureka
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8087/api/v1/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  user-service:
+    image: lloms/user-service:latest
+    container_name: lloms-user-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/lloms_user_db
+      SPRING_DATASOURCE_USERNAME: lloms_user
+      SPRING_DATASOURCE_PASSWORD: lloms_password
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+    networks:
+      - lloms-network
+    depends_on:
+      - mysql
+      - eureka
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8081/api/v1/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  outlet-service:
+    image: lloms/outlet-service:latest
+    container_name: lloms-outlet-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATA_MONGODB_URI: mongodb://lloms_user:lloms_password@mongodb:27017/lloms_outlet_db
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+    networks:
+      - lloms-network
+    depends_on:
+      - mongodb
+      - eureka
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8082/api/v1/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  reporting-service:
+    image: lloms/reporting-service:latest
+    container_name: lloms-reporting-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/lloms_reporting_db
+      SPRING_DATASOURCE_USERNAME: lloms_user
+      SPRING_DATASOURCE_PASSWORD: lloms_password
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+    networks:
+      - lloms-network
+    depends_on:
+      - postgres
+      - eureka
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8083/api/v1/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Frontend Applications
+  pos-system:
+    image: lloms/pos-system:latest
+    container_name: lloms-pos-system
+    ports:
+      - "5174:5174"
+    environment:
+      VITE_API_BASE_URL: http://localhost:8080
+    networks:
+      - lloms-network
+    depends_on:
+      - api-gateway
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5174" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  user-website:
+    image: lloms/user-website:latest
+    container_name: lloms-user-website
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_BASE_URL: http://localhost:8080
+    networks:
+      - lloms-network
+    depends_on:
+      - api-gateway
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5173" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Monitoring Stack
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: lloms-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infrastructure/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - lloms-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: lloms-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./infrastructure/monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./infrastructure/monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - lloms-network
+    depends_on:
+      - prometheus
+
+  # Logging Stack
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: lloms-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - lloms-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: lloms-kibana
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    networks:
+      - lloms-network
+    depends_on:
+      - elasticsearch
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.11.0
+    container_name: lloms-logstash
+    volumes:
+      - ./infrastructure/logging/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    networks:
+      - lloms-network
+    depends_on:
+      - elasticsearch
+
+volumes:
+  postgres_data:
+  mysql_data:
+  mongodb_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+  elasticsearch_data:
+
+
+networks:
+  lloms-network:
+    driver: bridge

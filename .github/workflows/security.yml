@@ -1,0 +1,139 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 2 * * 1" # Weekly on Monday at 2 AM
+
+jobs:
+  dependency-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          format: "sarif"
+          output: "trivy-results.sarif"
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: "trivy-results.sarif"
+
+  codeql-analysis:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["javascript", "java"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+  npm-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Audit POS System dependencies
+        run: |
+          cd frontend/pos-system
+          npm audit --audit-level=moderate || echo "Vulnerabilities found in POS System"
+
+      - name: Audit User Website dependencies
+        run: |
+          cd frontend/user-website
+          npm audit --audit-level=moderate || echo "Vulnerabilities found in User Website"
+
+      - name: Audit BFF dependencies
+        run: |
+          cd bff
+          npm audit --audit-level=moderate || echo "Vulnerabilities found in BFF"
+
+  maven-security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Run OWASP Dependency Check
+        run: |
+          for service in product-service user-service outlet-service reporting-service discovery-service api-gateway; do
+            cd services/$service
+            mvn org.owasp:dependency-check-maven:check || echo "Security issues found in $service"
+            cd ../..
+          done
+
+  docker-security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker images
+        run: |
+          docker build -t lloms/pos-system:security-test -f frontend/pos-system/Dockerfile frontend/pos-system/
+          docker build -t lloms/user-website:security-test -f frontend/user-website/Dockerfile frontend/user-website/
+          docker build -t lloms/product-service:security-test -f services/product-service/Dockerfile services/product-service/
+          docker build -t lloms/user-service:security-test -f services/user-service/Dockerfile services/user-service/
+          docker build -t lloms/outlet-service:security-test -f services/outlet-service/Dockerfile services/outlet-service/
+          docker build -t lloms/reporting-service:security-test -f services/reporting-service/Dockerfile services/reporting-service/
+          docker build -t lloms/discovery-service:security-test -f services/discovery-service/Dockerfile services/discovery-service/
+          docker build -t lloms/api-gateway:security-test -f services/api-gateway/Dockerfile services/api-gateway/
+          docker build -t lloms/bff:security-test -f bff/Dockerfile bff/
+
+      - name: Scan Docker images with Trivy
+        run: |
+          for image in lloms/pos-system:security-test lloms/user-website:security-test lloms/product-service:security-test lloms/user-service:security-test lloms/outlet-service:security-test lloms/reporting-service:security-test lloms/discovery-service:security-test lloms/api-gateway:security-test lloms/bff:security-test; do
+            trivy image --exit-code 1 --severity HIGH,CRITICAL $image || echo "High/Critical vulnerabilities found in $image"
+          done

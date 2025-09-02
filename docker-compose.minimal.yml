@@ -1,0 +1,149 @@
+version: '3.8'
+
+services:
+  # Databases
+  postgres:
+    image: postgres:15
+    container_name: lloms-postgres
+    environment:
+      POSTGRES_DB: productdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - lloms-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: lloms-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: userdb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - lloms-network
+
+  mongodb:
+    image: mongo:7.0
+    container_name: lloms-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - lloms-network
+
+  redis:
+    image: redis:7.0
+    container_name: lloms-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - lloms-network
+
+  # Discovery Service
+  eureka:
+    build:
+      context: ./services/discovery-service
+      dockerfile: Dockerfile
+    container_name: lloms-eureka
+    ports:
+      - "8761:8761"
+    networks:
+      - lloms-network
+    depends_on:
+      - postgres
+      - mysql
+      - mongodb
+      - redis
+
+  # User Service
+  user-service:
+    build:
+      context: ./services/user-service
+      dockerfile: Dockerfile
+    container_name: lloms-user-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/userdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka/
+    networks:
+      - lloms-network
+    depends_on:
+      - mysql
+      - eureka
+
+  # Product Service
+  product-service:
+    build:
+      context: ./services/product-service
+      dockerfile: Dockerfile
+    container_name: lloms-product-service
+    ports:
+      - "8087:8087"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/productdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka/
+    networks:
+      - lloms-network
+    depends_on:
+      - postgres
+      - eureka
+
+  # Outlet Service
+  outlet-service:
+    build:
+      context: ./services/outlet-service
+      dockerfile: Dockerfile
+    container_name: lloms-outlet-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/outletdb
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka/
+    networks:
+      - lloms-network
+    depends_on:
+      - mongodb
+      - eureka
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+      dockerfile: Dockerfile
+    container_name: lloms-api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka/
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    networks:
+      - lloms-network
+    depends_on:
+      - redis
+      - eureka
+      - user-service
+      - product-service
+      - outlet-service
+
+volumes:
+  postgres_data:
+  mysql_data:
+  mongodb_data:
+
+networks:
+  lloms-network:
+    driver: bridge

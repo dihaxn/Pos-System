@@ -1,0 +1,33 @@
+-- Create users table
+CREATE TABLE users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    phone_number VARCHAR(20),
+    status ENUM('ACTIVE', 'INACTIVE', 'SUSPENDED', 'PENDING_VERIFICATION', 'DELETED') NOT NULL DEFAULT 'PENDING_VERIFICATION',
+    role ENUM('SUPER_ADMIN', 'ADMIN', 'MANAGER', 'CASHIER', 'CUSTOMER') NOT NULL DEFAULT 'CUSTOMER',
+    is_email_verified BOOLEAN DEFAULT FALSE,
+    email_verification_token VARCHAR(255),
+    password_reset_token VARCHAR(255),
+    password_reset_expires TIMESTAMP NULL,
+    last_login TIMESTAMP NULL,
+    failed_login_attempts INT DEFAULT 0,
+    account_locked_until TIMESTAMP NULL,
+    mfa_enabled BOOLEAN DEFAULT FALSE,
+    mfa_secret VARCHAR(255),
+    profile_image_url VARCHAR(500),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by VARCHAR(255),
+    updated_by VARCHAR(255),
+    version BIGINT DEFAULT 0,
+    
+    INDEX idx_user_email (email),
+    INDEX idx_user_username (username),
+    INDEX idx_user_status (status),
+    INDEX idx_user_role (role),
+    INDEX idx_user_created_at (created_at)
+);

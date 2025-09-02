@@ -1,0 +1,178 @@
+version: '3.8'
+
+services:
+  # Database
+  mysql:
+    image: mysql:8.0
+    container_name: lloms-mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: lloms
+      MYSQL_ROOT_PASSWORD: ""
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - lloms-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Cache
+  redis:
+    image: redis:7-alpine
+    container_name: lloms-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - lloms-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      timeout: 20s
+      retries: 10
+
+  # Frontend Website
+  frontend-website:
+    build:
+      context: ./frontend/website
+      dockerfile: Dockerfile
+    container_name: lloms-website
+    ports:
+      - "5173:5173"
+    networks:
+      - lloms-network
+    depends_on:
+      - bff
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - PORT=5173
+
+  # Frontend POS
+  frontend-pos:
+    build:
+      context: ./frontend/pos
+      dockerfile: Dockerfile
+    container_name: lloms-pos
+    ports:
+      - "5174:5174"
+    networks:
+      - lloms-network
+    depends_on:
+      - bff
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - PORT=5174
+
+  # BFF (Backend for Frontend)
+  bff:
+    build:
+      context: ./bff
+      dockerfile: Dockerfile
+    container_name: lloms-bff
+    ports:
+      - "3000:3000"
+    networks:
+      - lloms-network
+    depends_on:
+      - mysql
+      - redis
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - JWT_SECRET=your-secret-key
+      - PRODUCT_SERVICE_BASE_URL=http://product-service:8087
+      - USER_SERVICE_BASE_URL=http://user-service:8088
+      - OUTLET_SERVICE_BASE_URL=http://outlet-service:8089
+      - REPORTING_SERVICE_BASE_URL=http://reporting-service:8090
+
+  # Product Service (Spring Boot)
+  product-service:
+    build:
+      context: ./services/product-service
+      dockerfile: Dockerfile
+    container_name: lloms-product-service
+    ports:
+      - "8087:8087"
+    networks:
+      - lloms-network
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/productDb
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+
+  # User Service (Spring Boot)
+  user-service:
+    build:
+      context: ./services/user-service
+      dockerfile: Dockerfile
+    container_name: lloms-user-service
+    ports:
+      - "8088:8088"
+    networks:
+      - lloms-network
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/userDb
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+
+  # Outlet Service (Spring Boot)
+  outlet-service:
+    build:
+      context: ./services/outlet-service
+      dockerfile: Dockerfile
+    container_name: lloms-outlet-service
+    ports:
+      - "8089:8089"
+    networks:
+      - lloms-network
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/outletDb
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+
+  # Reporting Service (Spring Boot)
+  reporting-service:
+    build:
+      context: ./services/reporting-service
+      dockerfile: Dockerfile
+    container_name: lloms-reporting-service
+    ports:
+      - "8090:8090"
+    networks:
+      - lloms-network
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_PORT=8090
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/reportingDb
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+
+volumes:
+  mysql_data:
+
+networks:
+  lloms-network:
+    driver: bridge

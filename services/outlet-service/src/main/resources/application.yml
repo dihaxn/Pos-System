@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: outlet-service
+  
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/lloms_outlet_db
+      auto-index-creation: true
+      
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 2000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        
+  security:
+    jwt:
+      secret: ${JWT_SECRET:lloms-super-secret-jwt-key-for-outlet-service-2024}
+      expiration: 86400000 # 24 hours
+
+server:
+  port: 8082
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+logging:
+  level:
+    com.lloms.outletservice: DEBUG
+    org.springframework.data.mongodb: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/outlet-service.log
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      outletService:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        sliding-window-size: 10
+  retry:
+    instances:
+      outletService:
+        max-attempts: 3
+        wait-duration: 1s

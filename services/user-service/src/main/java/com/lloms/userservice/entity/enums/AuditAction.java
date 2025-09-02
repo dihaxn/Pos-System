@@ -1,0 +1,23 @@
+package com.lloms.userservice.entity.enums;
+
+public enum AuditAction {
+    CREATE,
+    READ,
+    UPDATE,
+    DELETE,
+    LOGIN,
+    LOGOUT,
+    PASSWORD_CHANGE,
+    EMAIL_VERIFICATION,
+    ACCOUNT_LOCK,
+    ACCOUNT_UNLOCK,
+    ROLE_CHANGE,
+    STATUS_CHANGE,
+    MFA_ENABLE,
+    MFA_DISABLE,
+    SESSION_CREATE,
+    SESSION_REVOKE,
+    FAILED_LOGIN,
+    PASSWORD_RESET_REQUEST,
+    PASSWORD_RESET_COMPLETE
+}
