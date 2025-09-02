@@ -26,9 +26,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
-          cache-dependency-path: frontend/${{ matrix.app }}/package.json
           registry-url: "https://registry.npmjs.org"
+
+      - name: Debug - Check file contents
+        run: |
+          echo "Checking ContactUs file contents:"
+          head -20 frontend/user-website/src/components/ContactUs/ContactUs.jsx || echo "File not found"
+          echo "Checking for Material-UI imports:"
+          grep -r "@mui" frontend/${{ matrix.app }}/src/ || echo "No Material-UI imports found"
+        if: matrix.app == 'user-website'
 
       - name: Install dependencies
         run: |
@@ -107,8 +113,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
-          cache-dependency-path: bff/package.json
 
       - name: Install dependencies
         run: |
