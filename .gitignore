@@ -1,41 +1,16 @@
-# Dependencies
+# ===========================================
+# LLOMS POS System - Comprehensive .gitignore
+# ===========================================
+
+# ===========================================
+# Node.js & NPM
+# ===========================================
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Production builds
-dist/
-build/
-target/
-
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-config.env
-
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Logs
-logs/
-*.log
+lerna-debug.log*
+.pnpm-debug.log*
 
 # Runtime data
 pids/
@@ -46,18 +21,34 @@ pids/
 # Coverage directory used by tools like istanbul
 coverage/
 *.lcov
-
-# nyc test coverage
 .nyc_output
+
+# Grunt intermediate storage
+.grunt
+
+# Bower dependency directory
+bower_components
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons
+build/Release
 
 # Dependency directories
 jspm_packages/
+
+# TypeScript cache
+*.tsbuildinfo
 
 # Optional npm cache directory
 .npm
 
 # Optional eslint cache
 .eslintcache
+
+# Optional stylelint cache
+.stylelintcache
 
 # Microbundle cache
 .rpt2_cache/
@@ -74,17 +65,31 @@ jspm_packages/
 # Yarn Integrity file
 .yarn-integrity
 
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+config.env
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
 
-# next.js build output
+# Next.js build output
 .next
+out
 
-# nuxt.js build output
+# Nuxt.js build / generate output
 .nuxt
+dist
 
-# vuepress build output
+# Gatsby files
+.cache/
+public
+
+# Vuepress build output
 .vuepress/dist
 
 # Serverless directories
@@ -99,15 +104,43 @@ jspm_packages/
 # TernJS port file
 .tern-port
 
-# Java
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# ===========================================
+# Java & Maven
+# ===========================================
+# Compiled class file
 *.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files
 *.jar
 *.war
+*.nar
 *.ear
 *.zip
 *.tar.gz
 *.rar
+
+# Virtual machine crash logs
 hs_err_pid*
+replay_pid*
 
 # Maven
 target/
@@ -120,6 +153,7 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
 
 # Gradle
 .gradle
@@ -128,14 +162,326 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-# Docker
-.dockerignore
+# ===========================================
+# Spring Boot
+# ===========================================
+*.original
+*.rej
+*.swp
+*.swo
+*~
 
-# Database
+# ===========================================
+# React & Frontend Builds
+# ===========================================
+# Production builds
+dist/
+build/
+
+# Vite
+dist-ssr
+*.local
+
+# ===========================================
+# IDEs & Editors
+# ===========================================
+# VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ===========================================
+# Operating System Files
+# ===========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ===========================================
+# Docker
+# ===========================================
+.dockerignore
+docker-compose.override.yml
+.docker/
+
+# ===========================================
+# Databases
+# ===========================================
+# SQLite
 *.db
 *.sqlite
 *.sqlite3
+*.db-journal
 
-# Temporary files
+# PostgreSQL
+*.pgsql
+*.sql
+
+# MySQL
+*.sql
+
+# MongoDB
+*.bson
+
+# ===========================================
+# Logs & Monitoring
+# ===========================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# ===========================================
+# Testing
+# ===========================================
+# Coverage reports
+coverage/
+*.lcov
+.nyc_output
+junit.xml
+
+# Jest
+.jest/
+
+# ===========================================
+# Security & Secrets
+# ===========================================
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+config.env
+
+# API Keys
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Certificates
+*.crt
+*.cer
+*.der
+
+# ===========================================
+# Temporary Files
+# ===========================================
 tmp/
 temp/
+.tmp/
+.temp/
+
+# ===========================================
+# Package Managers
+# ===========================================
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# pnpm
+.pnpm-store/
+
+# ===========================================
+# Build Tools
+# ===========================================
+# Webpack
+.webpack/
+
+# Rollup
+.rollup.cache/
+
+# ===========================================
+# LLOMS Specific
+# ===========================================
+# Local development files
+local/
+dev/
+development/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Archive files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# ===========================================
+# CI/CD
+# ===========================================
+# GitHub Actions artifacts
+.github/workflows/*.yml.bak
+
+# ===========================================
+# Documentation
+# ===========================================
+# Generated documentation
+docs/build/
+docs/_build/
+
+# ===========================================
+# Performance & Profiling
+# ===========================================
+# Chrome DevTools
+*.cpuprofile
+*.heapprofile
+*.heapsnapshot
+
+# ===========================================
+# Miscellaneous
+# ===========================================
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
