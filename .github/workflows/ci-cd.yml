@@ -84,12 +84,12 @@ jobs:
       - name: Build service
         run: |
           cd services/${{ matrix.service }}
-          mvn clean compile test-compile
+          mvn clean compile test-compile -q
 
       - name: Run tests
         run: |
           cd services/${{ matrix.service }}
-          mvn test || echo "Tests not configured for ${{ matrix.service }}"
+          mvn test -q || echo "Tests not configured for ${{ matrix.service }}"
 
   # BFF Tests
   bff-test:

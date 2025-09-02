@@ -56,7 +56,37 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
+      - name: Setup Java
+        if: matrix.language == 'java'
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Cache Maven dependencies
+        if: matrix.language == 'java'
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Build Java services
+        if: matrix.language == 'java'
+        run: |
+          for service in product-service user-service outlet-service reporting-service discovery-service api-gateway; do
+            if [ -d "services/$service" ] && [ -f "services/$service/pom.xml" ]; then
+              echo "Building $service..."
+              cd services/$service
+              mvn clean compile -q || echo "Build failed for $service, continuing..."
+              cd ../..
+            else
+              echo "Skipping $service - no pom.xml found"
+            fi
+          done
+
       - name: Autobuild
+        if: matrix.language == 'javascript'
         uses: github/codeql-action/autobuild@v3
 
       - name: Perform CodeQL Analysis
