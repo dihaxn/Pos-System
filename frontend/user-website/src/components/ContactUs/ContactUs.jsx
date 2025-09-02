@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { AiFillMail, AiFillPhone, AiOutlineComment } from "react-icons/ai";
 import { BsFacebook } from "react-icons/bs";
 import InputLabel from '@mui/material/InputLabel';

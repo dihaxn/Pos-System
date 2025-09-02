@@ -1,4 +1,3 @@
-import React from "react";
 import Product_Card from "./ProductCard.jsx";
 import { useProducts } from "../../hooks/useApi";
 import { motion, AnimatePresence } from "framer-motion";
