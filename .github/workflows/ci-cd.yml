@@ -32,7 +32,8 @@ jobs:
       - name: Install dependencies
         run: |
           cd frontend/${{ matrix.app }}
-          npm install
+          rm -rf node_modules package-lock.json
+          npm install --legacy-peer-deps
 
       - name: Run linting
         run: |
@@ -109,7 +110,8 @@ jobs:
       - name: Install dependencies
         run: |
           cd bff
-          npm install
+          rm -rf node_modules package-lock.json
+          npm install --legacy-peer-deps
 
       - name: Run tests
         run: |
