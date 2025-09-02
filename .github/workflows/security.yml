@@ -60,8 +60,8 @@ jobs:
         if: matrix.language == 'java'
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: "21"
+          distribution: "temurin"
 
       - name: Cache Maven dependencies
         if: matrix.language == 'java'
@@ -102,7 +102,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "20"
 
       - name: Audit POS System dependencies
         run: |
