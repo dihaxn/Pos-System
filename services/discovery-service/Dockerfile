@@ -1,5 +1,5 @@
 # Multi-stage build for Discovery Service
-FROM maven:3.9.6-openjdk-21-slim AS build
+FROM maven:3.9.6-openjdk-17-slim AS build
 
 # Set working directory
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Runtime stage
-FROM openjdk:21-jre-slim
+FROM openjdk:17-jre-slim
 
 # Install necessary packages
 RUN apt-get update && apt-get install -y \
