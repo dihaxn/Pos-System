@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import CardContainer from "../../../shared/components/cardContainer/CardContainer";
 import OrderTable from "../../components/PosTable/OrderTable";
-import ItemCard from "../../../shared/components/itemCard/ItemCard";
+import ItemCard from "../../../shared/components/ItemCard/ItemCard";
 import ActionContainer from "../../../shared/components/ActionContainer/ActionContainer";
 import OrderAction from "../../../shared/components/OrderAction/OrderAction";
 import ReturnAction from "../../components/ReturnAction/ReturnAction";

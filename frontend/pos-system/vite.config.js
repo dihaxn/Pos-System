@@ -27,12 +27,6 @@ export default defineConfig(({ mode }) => ({
         manualChunks: {
           // Vendor chunks for better caching
           vendor: ['react', 'react-dom', 'react-router-dom'],
-          // Feature-based chunks
-          auth: ['./src/features/auth'],
-          outlet: ['./src/features/outlet'],
-          factory: ['./src/features/factory'],
-          owner: ['./src/features/owner'],
-          shared: ['./src/features/shared'],
         },
       },
     },
