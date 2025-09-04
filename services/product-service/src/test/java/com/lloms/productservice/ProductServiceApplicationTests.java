@@ -1,4 +1,4 @@
-package com.LittleLanka.product_service;
+package com.lloms.productservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
