@@ -1,4 +1,4 @@
-package com.LittleLanka.product_service.util;
+package com.LittleLanka.productservice.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

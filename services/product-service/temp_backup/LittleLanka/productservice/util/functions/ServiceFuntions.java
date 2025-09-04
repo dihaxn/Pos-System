@@ -1,10 +1,10 @@
-package com.LittleLanka.product_service.util.functions;
+package com.LittleLanka.productservice.util.functions;
 
-import com.LittleLanka.product_service.dto.paginated.PaginatedResponseGetAllProductsDTO;
-import com.LittleLanka.product_service.dto.response.ResponseGetAllProductsDTO;
-import com.LittleLanka.product_service.entity.Product;
-import com.LittleLanka.product_service.repository.PriceUpdateRepository;
-import com.LittleLanka.product_service.service.ProductService;
+import com.lloms.productservice.dto.paginated.PaginatedResponseGetAllProductsDTO;
+import com.lloms.productservice.dto.response.ResponseGetAllProductsDTO;
+import com.lloms.productservice.entity.Product;
+import com.lloms.productservice.repository.PriceUpdateRepository;
+import com.lloms.productservice.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

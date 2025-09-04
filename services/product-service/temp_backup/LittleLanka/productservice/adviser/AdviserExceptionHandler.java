@@ -1,7 +1,7 @@
-package com.LittleLanka.product_service.adviser;
+package com.LittleLanka.productservice.adviser;
 
-import com.LittleLanka.product_service.exception.*;
-import com.LittleLanka.product_service.util.StandardResponse;
+import com.lloms.productservice.exception.*;
+import com.lloms.productservice.util.StandardResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
