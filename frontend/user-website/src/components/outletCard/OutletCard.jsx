@@ -1,5 +1,6 @@
 import React from "react";
-import { FaMapMarkerAlt, FaPhone, FaInfoCircle, FaClock, FaStar } from "react-icons/fa";
+import PropTypes from "prop-types";
+import { FaMapMarkerAlt, FaPhone, FaClock } from "react-icons/fa";
 import { MdOutlineVerified } from "react-icons/md";
 import defaultImage from "../../assets/Empty image.jpg";
 
@@ -93,5 +94,16 @@ function OutletCard({ outlet }) {
         </div>
     );
 }
+
+OutletCard.propTypes = {
+  outlet: PropTypes.shape({
+    imageUrl: PropTypes.string,
+    status: PropTypes.string,
+    outletName: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
+    openingHours: PropTypes.string.isRequired,
+    phone: PropTypes.string,
+  }).isRequired,
+};
 
 export default OutletCard;

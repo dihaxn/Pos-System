@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 
 const SkeletonLoader = ({
@@ -186,6 +187,15 @@ const SkeletonLoader = ({
       {renderSkeleton()}
     </div>
   );
+};
+
+SkeletonLoader.propTypes = {
+  variant: PropTypes.oneOf(['text', 'card', 'image', 'button', 'table']),
+  lines: PropTypes.number,
+  className: PropTypes.string,
+  height: PropTypes.string,
+  width: PropTypes.string,
+  rounded: PropTypes.string,
 };
 
 export default SkeletonLoader; 

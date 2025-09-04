@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet-async';
 
 const SEO = ({ 
@@ -124,6 +125,25 @@ const SEO = ({
       {children}
     </Helmet>
   );
+};
+
+SEO.propTypes = {
+  title: PropTypes.string,
+  description: PropTypes.string,
+  keywords: PropTypes.arrayOf(PropTypes.string),
+  image: PropTypes.string,
+  url: PropTypes.string,
+  type: PropTypes.oneOf(['website', 'article', 'product']),
+  author: PropTypes.string,
+  publishedTime: PropTypes.string,
+  modifiedTime: PropTypes.string,
+  section: PropTypes.string,
+  tags: PropTypes.arrayOf(PropTypes.string),
+  noindex: PropTypes.bool,
+  nofollow: PropTypes.bool,
+  canonical: PropTypes.string,
+  lang: PropTypes.string,
+  children: PropTypes.node,
 };
 
 export default SEO;
