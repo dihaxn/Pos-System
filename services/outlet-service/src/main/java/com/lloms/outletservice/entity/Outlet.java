@@ -1,5 +1,7 @@
 package com.lloms.outletservice.entity;
 
+import com.lloms.outletservice.entity.enums.OutletStatus;
+import com.lloms.outletservice.entity.enums.OutletType;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

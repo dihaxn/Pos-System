@@ -1,7 +1,7 @@
-package com.lloms.outlet_service.advisor;
+package com.lloms.outletservice.advisor;
 
-import com.lloms.outlet_service.exception.NotFoundException;
-import com.lloms.outlet_service.util.StandardResponse;
+import com.lloms.outletservice.exception.NotFoundException;
+import com.lloms.outletservice.util.StandardResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
