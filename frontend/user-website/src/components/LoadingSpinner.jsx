@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 
 const LoadingSpinner = ({
@@ -155,6 +156,13 @@ const LoadingSpinner = ({
       </div>
     </motion.div>
   );
+};
+
+LoadingSpinner.propTypes = {
+  variant: PropTypes.oneOf(['default', 'dots', 'pulse', 'wave']),
+  size: PropTypes.oneOf(['small', 'default', 'large']),
+  text: PropTypes.string,
+  showProgress: PropTypes.bool,
 };
 
 export default LoadingSpinner;

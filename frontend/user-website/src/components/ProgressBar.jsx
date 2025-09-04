@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 
 const ProgressBar = ({
@@ -172,6 +173,16 @@ const ProgressBar = ({
       )}
     </div>
   );
+};
+
+ProgressBar.propTypes = {
+  progress: PropTypes.number,
+  variant: PropTypes.oneOf(['default', 'gradient', 'circular', 'striped']),
+  size: PropTypes.oneOf(['small', 'default', 'large']),
+  showLabel: PropTypes.bool,
+  animated: PropTypes.bool,
+  className: PropTypes.string,
+  color: PropTypes.oneOf(['orange', 'brand', 'white', 'gray']),
 };
 
 export default ProgressBar;

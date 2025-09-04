@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 
 const PageTransition = ({ 
@@ -72,6 +73,14 @@ const PageTransition = ({
       {children}
     </motion.div>
   );
+};
+
+PageTransition.propTypes = {
+  children: PropTypes.node.isRequired,
+  variant: PropTypes.oneOf(['fade', 'slideUp', 'slideLeft', 'slideRight', 'scale', 'flip', 'bounce']),
+  duration: PropTypes.number,
+  delay: PropTypes.number,
+  className: PropTypes.string,
 };
 
 export default PageTransition;

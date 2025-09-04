@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
 import LoadingSpinner from './LoadingSpinner';
 import SkeletonLoader from './SkeletonLoader';
@@ -150,6 +151,17 @@ const PageLoadingWrapper = ({
       </AnimatePresence>
     </div>
   );
+};
+
+PageLoadingWrapper.propTypes = {
+  children: PropTypes.node.isRequired,
+  isLoading: PropTypes.bool,
+  loadingType: PropTypes.oneOf(['spinner', 'skeleton', 'progress']),
+  loadingVariant: PropTypes.string,
+  skeletonConfig: PropTypes.object,
+  progressConfig: PropTypes.object,
+  minLoadTime: PropTypes.number,
+  className: PropTypes.string,
 };
 
 export default PageLoadingWrapper;

@@ -54,7 +54,7 @@ jobs:
       - name: Run tests
         run: |
           cd frontend/${{ matrix.app }}
-          npm test -- --coverage --watchAll=false || echo "Tests not configured"
+          npm test -- --coverage --run || echo "Tests not configured"
 
       - name: Build application
         run: |

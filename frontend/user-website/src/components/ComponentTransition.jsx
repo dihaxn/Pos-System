@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 
 const ComponentTransition = ({ 
@@ -114,6 +115,17 @@ const ComponentTransition = ({
       {children}
     </motion.div>
   );
+};
+
+ComponentTransition.propTypes = {
+  children: PropTypes.node.isRequired,
+  variant: PropTypes.oneOf(['fadeIn', 'slideUp', 'slideLeft', 'slideRight', 'scale', 'rotate', 'bounce', 'stagger']),
+  duration: PropTypes.number,
+  delay: PropTypes.number,
+  stagger: PropTypes.number,
+  className: PropTypes.string,
+  whileHover: PropTypes.object,
+  whileTap: PropTypes.object,
 };
 
 export default ComponentTransition;
