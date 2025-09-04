@@ -57,4 +57,41 @@ public class ProductAnalytics {
     @Column(name = "updated_at")
     @LastModifiedDate
     private LocalDateTime updatedAt;
+    
+    // Manual setters for compatibility
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+    
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+    
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    
+    public void setOutletId(Long outletId) {
+        this.outletId = outletId;
+    }
+    
+    public void setTotalQuantitySold(Integer totalQuantitySold) {
+        this.totalQuantitySold = totalQuantitySold;
+    }
+    
+    public void setTotalRevenue(BigDecimal totalRevenue) {
+        this.totalRevenue = totalRevenue;
+    }
+    
+    public void setAveragePrice(BigDecimal averagePrice) {
+        this.averagePrice = averagePrice;
+    }
+    
+    public void setStockTurnoverRate(Double stockTurnoverRate) {
+        this.stockTurnoverRate = stockTurnoverRate;
+    }
+    
+    public void setAnalysisDate(LocalDateTime analysisDate) {
+        this.analysisDate = analysisDate;
+    }
 }

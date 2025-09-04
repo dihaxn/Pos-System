@@ -65,4 +65,45 @@ public class SalesReport {
     public enum ReportType {
         DAILY, WEEKLY, MONTHLY, YEARLY
     }
+    
+    // Manual setters for compatibility
+    public void setOutletId(Long outletId) {
+        this.outletId = outletId;
+    }
+    
+    public void setOutletName(String outletName) {
+        this.outletName = outletName;
+    }
+    
+    public void setReportDate(LocalDateTime reportDate) {
+        this.reportDate = reportDate;
+    }
+    
+    public void setTotalSales(BigDecimal totalSales) {
+        this.totalSales = totalSales;
+    }
+    
+    public void setTotalOrders(Integer totalOrders) {
+        this.totalOrders = totalOrders;
+    }
+    
+    public void setTotalItemsSold(Integer totalItemsSold) {
+        this.totalItemsSold = totalItemsSold;
+    }
+    
+    public void setAverageOrderValue(BigDecimal averageOrderValue) {
+        this.averageOrderValue = averageOrderValue;
+    }
+    
+    public void setTopSellingProduct(String topSellingProduct) {
+        this.topSellingProduct = topSellingProduct;
+    }
+    
+    public void setTopSellingCategory(String topSellingCategory) {
+        this.topSellingCategory = topSellingCategory;
+    }
+    
+    public void setReportType(ReportType reportType) {
+        this.reportType = reportType;
+    }
 }

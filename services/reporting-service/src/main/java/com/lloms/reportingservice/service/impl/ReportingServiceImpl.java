@@ -5,8 +5,8 @@ import com.lloms.reportingservice.entity.SalesReport;
 import com.lloms.reportingservice.repository.ProductAnalyticsRepository;
 import com.lloms.reportingservice.repository.SalesReportRepository;
 import com.lloms.reportingservice.service.ReportingService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,13 +18,17 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 @Transactional
 public class ReportingServiceImpl implements ReportingService {
     
+    private static final Logger log = LoggerFactory.getLogger(ReportingServiceImpl.class);
     private final SalesReportRepository salesReportRepository;
     private final ProductAnalyticsRepository productAnalyticsRepository;
+    
+    public ReportingServiceImpl(SalesReportRepository salesReportRepository, ProductAnalyticsRepository productAnalyticsRepository) {
+        this.salesReportRepository = salesReportRepository;
+        this.productAnalyticsRepository = productAnalyticsRepository;
+    }
     
     @Override
     public SalesReport generateDailySalesReport(Long outletId, LocalDateTime date) {
