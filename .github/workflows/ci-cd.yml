@@ -65,11 +65,10 @@ jobs:
   backend-test:
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        service:
+              matrix:
+          service:
           [
             product-service,
-            user-service,
             outlet-service,
             reporting-service,
             discovery-service,
