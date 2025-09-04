@@ -1,4 +1,3 @@
-import React from 'react';
 import logo from '../../assets/websitenavbar/logob.png';
 import banner from '../../assets/footerimg.png';
 import { Link } from 'react-router-dom';

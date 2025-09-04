@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { 
   ChevronUpIcon, 
   ChevronDownIcon, 
@@ -267,6 +268,25 @@ const DataTable = ({
       </div>
     </div>
   );
+};
+
+DataTable.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object),
+  columns: PropTypes.arrayOf(PropTypes.shape({
+    key: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    sortable: PropTypes.bool,
+    render: PropTypes.func,
+  })),
+  loading: PropTypes.bool,
+  searchable: PropTypes.bool,
+  sortable: PropTypes.bool,
+  pagination: PropTypes.bool,
+  pageSize: PropTypes.number,
+  className: PropTypes.string,
+  onRowClick: PropTypes.func,
+  actions: PropTypes.node,
+  emptyMessage: PropTypes.string,
 };
 
 export default DataTable;

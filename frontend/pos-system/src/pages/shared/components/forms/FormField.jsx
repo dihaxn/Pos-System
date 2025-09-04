@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ExclamationCircleIcon, CheckCircleIcon } from '@heroicons/react/24/solid';
 
 const FormField = ({
@@ -212,6 +213,40 @@ export const FormTextArea = ({
       )}
     </div>
   );
+};
+
+// PropTypes for FormField
+FormField.propTypes = {
+  label: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  placeholder: PropTypes.string,
+  required: PropTypes.bool,
+  disabled: PropTypes.bool,
+  error: PropTypes.string,
+  success: PropTypes.string,
+  helperText: PropTypes.string,
+  className: PropTypes.string,
+};
+
+// PropTypes for FormTextArea
+FormTextArea.propTypes = {
+  label: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  placeholder: PropTypes.string,
+  required: PropTypes.bool,
+  disabled: PropTypes.bool,
+  error: PropTypes.string,
+  success: PropTypes.string,
+  helperText: PropTypes.string,
+  rows: PropTypes.number,
+  className: PropTypes.string,
 };
 
 export default FormField;

@@ -1,4 +1,3 @@
-import React from 'react';
 import add from '../../assets/websitenavbar/add.png';
 import { Link } from 'react-router-dom';
 

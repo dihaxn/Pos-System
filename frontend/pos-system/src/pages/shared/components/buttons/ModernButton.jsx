@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ButtonLoader } from '../LoadingWheel/LoadingWheel';
 
 const ModernButton = ({
@@ -149,5 +150,34 @@ export const IconButton = ({
     {...props}
   />
 );
+
+// PropTypes for ModernButton
+ModernButton.propTypes = {
+  children: PropTypes.node,
+  variant: PropTypes.oneOf(['primary', 'secondary', 'success', 'warning', 'error', 'outline', 'ghost', 'link']),
+  size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
+  fullWidth: PropTypes.bool,
+  rounded: PropTypes.oneOf(['none', 'sm', 'md', 'lg', 'xl', 'full']),
+  icon: PropTypes.node,
+  iconPosition: PropTypes.oneOf(['left', 'right']),
+  onClick: PropTypes.func,
+  type: PropTypes.oneOf(['button', 'submit', 'reset']),
+  className: PropTypes.string,
+};
+
+// PropTypes for ButtonGroup
+ButtonGroup.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};
+
+// PropTypes for IconButton
+IconButton.propTypes = {
+  icon: PropTypes.node.isRequired,
+  size: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
+  variant: PropTypes.oneOf(['primary', 'secondary', 'success', 'warning', 'error', 'outline', 'ghost', 'link']),
+};
 
 export default ModernButton;
