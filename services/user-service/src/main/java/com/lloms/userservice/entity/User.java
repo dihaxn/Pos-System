@@ -11,6 +11,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import com.lloms.userservice.entity.enums.UserStatus;
+import com.lloms.userservice.entity.enums.UserRole;
 
 @Entity
 @Table(name = "users", indexes = {
@@ -65,7 +67,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default
-    private UserRole role = UserRole.CUSTOMER;
+    private UserRole role = UserRole.CASHIER;
     
     @Column(name = "is_email_verified")
     @Builder.Default
