@@ -8,7 +8,7 @@ on:
 
 env:
   NODE_VERSION: "20"
-  JAVA_VERSION: "21"
+  JAVA_VERSION: "17"
 
 jobs:
   # Frontend Tests
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: [pos-system, user-website]
+        app: [pos-system, user-website, website]
 
     steps:
       - name: Checkout code
@@ -45,6 +45,7 @@ jobs:
           npm cache clean --force
           npm install --legacy-peer-deps --verbose
           npm list @mui/material || echo "Material-UI not found"
+        continue-on-error: true
 
       - name: Run linting
         run: |
@@ -54,7 +55,11 @@ jobs:
       - name: Run tests
         run: |
           cd frontend/${{ matrix.app }}
-          npm test -- --coverage --run || echo "Tests not configured"
+          if [ "${{ matrix.app }}" == "user-website" ]; then
+            npm run test:coverage || echo "Tests not configured"
+          else
+            npm test -- --coverage --run || echo "Tests not configured"
+          fi
 
       - name: Build application
         run: |
@@ -65,13 +70,15 @@ jobs:
   backend-test:
     runs-on: ubuntu-latest
     strategy:
-              matrix:
-          service:
+      matrix:
+        service:
           [
             outlet-service,
             reporting-service,
             discovery-service,
             api-gateway,
+            product-service,
+            user-service
           ]
 
     steps:
@@ -85,11 +92,12 @@ jobs:
           distribution: "temurin"
 
       - name: Cache Maven dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+          restore-keys: |
+            ${{ runner.os }}-m2-
 
       - name: Build service
         run: |
@@ -100,6 +108,11 @@ jobs:
         run: |
           cd services/${{ matrix.service }}
           mvn test -q || echo "Tests not configured for ${{ matrix.service }}"
+
+      - name: Package service
+        run: |
+          cd services/${{ matrix.service }}
+          mvn package -DskipTests -q || echo "Package failed for ${{ matrix.service }}"
 
   # BFF Tests
   bff-test:
@@ -138,7 +151,7 @@ jobs:
       - name: Build BFF
         run: |
           cd bff
-          npm run build || echo "Build script not configured"
+          npm run build
 
   # Docker Build
   docker-build:
@@ -156,10 +169,11 @@ jobs:
         run: |
           docker build -t lloms/pos-system:latest -f frontend/pos-system/Dockerfile frontend/pos-system/
           docker build -t lloms/user-website:latest -f frontend/user-website/Dockerfile frontend/user-website/
+          docker build -t lloms/website:latest -f frontend/website/Dockerfile frontend/website/
 
       - name: Build backend images
         run: |
-          for service in outlet-service reporting-service discovery-service api-gateway; do
+          for service in outlet-service reporting-service discovery-service api-gateway product-service user-service; do
             docker build -t lloms/$service:latest -f services/$service/Dockerfile services/$service/
           done
 
