@@ -1,5 +1,7 @@
 package com.lloms.outletservice.entity;
 
+import com.lloms.outletservice.entity.enums.PaymentMethod;
+import com.lloms.outletservice.entity.enums.SaleStatus;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
