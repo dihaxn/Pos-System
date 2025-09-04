@@ -1,5 +1,3 @@
-import React from "react";
-
 function LoadingWheel() {
   return (
     <div className="flex items-center justify-center">

@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const ProfilePhoto = ({ src, alt, size = 24, border = true }) => {
   return (
@@ -16,6 +16,13 @@ const ProfilePhoto = ({ src, alt, size = 24, border = true }) => {
       />
     </div>
   );
+};
+
+ProfilePhoto.propTypes = {
+  src: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+  size: PropTypes.number,
+  border: PropTypes.bool,
 };
 
 export default ProfilePhoto;

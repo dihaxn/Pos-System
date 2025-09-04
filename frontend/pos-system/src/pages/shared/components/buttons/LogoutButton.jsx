@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import PropTypes from "prop-types";
 
 const LogoutButton = ({ children, onClick }) => {
   return (
@@ -14,6 +15,11 @@ const LogoutButton = ({ children, onClick }) => {
       </motion.button>
     </div>
   );
+};
+
+LogoutButton.propTypes = {
+  children: PropTypes.node.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default LogoutButton;

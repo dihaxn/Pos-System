@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 function FillButton({children,onClick,disabled=false}) {
   return (
@@ -11,5 +12,11 @@ function FillButton({children,onClick,disabled=false}) {
     </button>
   );
 }
+
+FillButton.propTypes = {
+  children: PropTypes.node.isRequired,
+  onClick: PropTypes.func,
+  disabled: PropTypes.bool,
+};
 
 export default FillButton;

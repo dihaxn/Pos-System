@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import PropTypes from "prop-types";
 
 const IconNavButton = ({ children, onClick, icon ,isSliderBtn=false,isActive}) => {
   const ml=isSliderBtn ? "ml-[100px]" : "";
@@ -27,6 +28,14 @@ const IconNavButton = ({ children, onClick, icon ,isSliderBtn=false,isActive}) =
       </motion.div>
   
   );
+};
+
+IconNavButton.propTypes = {
+  children: PropTypes.node.isRequired,
+  onClick: PropTypes.func,
+  icon: PropTypes.string,
+  isSliderBtn: PropTypes.bool,
+  isActive: PropTypes.bool,
 };
 
 export default IconNavButton;

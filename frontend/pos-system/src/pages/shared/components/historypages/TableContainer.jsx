@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import TableData from "./TableData.jsx";
 
 const TableContainer = ({ orders }) => {
@@ -21,6 +22,16 @@ const TableContainer = ({ orders }) => {
       <TableData orders={orders} />
     </div>
   );
+};
+
+TableContainer.propTypes = {
+  orders: PropTypes.arrayOf(PropTypes.shape({
+    orderId: PropTypes.number.isRequired,
+    customerName: PropTypes.string.isRequired,
+    orderDate: PropTypes.string.isRequired,
+    totalAmount: PropTypes.number.isRequired,
+    status: PropTypes.string.isRequired,
+  })).isRequired,
 };
 
 export default TableContainer;

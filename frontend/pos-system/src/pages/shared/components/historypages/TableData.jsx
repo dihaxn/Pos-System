@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { getCusOrderItemsByCusOrId } from "../../../outlet/services/outlet_service/cusOrderController";
 import BillTable from "../../../outlet/components/PosTable/BillTable.jsx";
 
@@ -99,6 +100,16 @@ const TableData = ({ orders }) => {
       )}
     </div>
   );
+};
+
+TableData.propTypes = {
+  orders: PropTypes.arrayOf(PropTypes.shape({
+    orderId: PropTypes.number.isRequired,
+    customerName: PropTypes.string.isRequired,
+    orderDate: PropTypes.string.isRequired,
+    totalAmount: PropTypes.number.isRequired,
+    status: PropTypes.string.isRequired,
+  })).isRequired,
 };
 
 export default TableData;

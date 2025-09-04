@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 import BillDataRow from "./BillDataRow";
 
 function BillTable({ products }) {
@@ -73,5 +73,15 @@ function BillTable({ products }) {
     </div>
   );
 }
+
+BillTable.propTypes = {
+  products: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    quantity: PropTypes.number.isRequired,
+    discount: PropTypes.number.isRequired,
+  })).isRequired,
+};
 
 export default BillTable;

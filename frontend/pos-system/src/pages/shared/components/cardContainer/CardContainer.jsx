@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 function CardContainer({ children, h = "58vh" }) {
   return (
@@ -14,5 +15,10 @@ function CardContainer({ children, h = "58vh" }) {
     </div>
   );
 }
+
+CardContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+  h: PropTypes.string,
+};
 
 export default CardContainer;

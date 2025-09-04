@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { defaultImage } from "@/assets/imageIndex.js";
 
 function ItemCard({ item, onClick }) {
@@ -44,5 +45,16 @@ function ItemCard({ item, onClick }) {
     </div>
   );
 }
+
+ItemCard.propTypes = {
+  item: PropTypes.shape({
+    productId: PropTypes.number.isRequired,
+    productName: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    stockQuantity: PropTypes.number.isRequired,
+    imageUrl: PropTypes.string,
+  }).isRequired,
+  onClick: PropTypes.func,
+};
 
 export default ItemCard;

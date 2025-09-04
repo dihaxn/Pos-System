@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import LoadingWheel from "../loadingWheel/LoadingWheel";
 // import BillTable from "../PosTable/BillTable"; // Commented - component doesn't exist
 // import { getCusOrderItemsByCusOrId } from "../../api/outlet_service/cusOrderController"; // Commented for development
@@ -152,5 +153,15 @@ function CustomerOrderTable({ orders }) {
     </div>
   );
 }
+
+CustomerOrderTable.propTypes = {
+  orders: PropTypes.arrayOf(PropTypes.shape({
+    orderId: PropTypes.number.isRequired,
+    customerName: PropTypes.string.isRequired,
+    orderDate: PropTypes.string.isRequired,
+    totalAmount: PropTypes.number.isRequired,
+    status: PropTypes.string.isRequired,
+  })).isRequired,
+};
 
 export default CustomerOrderTable;
