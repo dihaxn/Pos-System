@@ -27,6 +27,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: "https://registry.npmjs.org"
+          cache: "npm"
+          cache-dependency-path: "frontend/${{ matrix.app }}/package-lock.json"
 
       - name: Debug - Check file contents
         run: |
@@ -113,6 +115,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: "bff/package-lock.json"
+
+      - name: Cache BFF dependencies
+        uses: actions/cache@v4
+        with:
+          path: bff/node_modules
+          key: ${{ runner.os }}-bff-npm-${{ hashFiles('bff/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-bff-npm-
 
       - name: Install dependencies
         run: |
