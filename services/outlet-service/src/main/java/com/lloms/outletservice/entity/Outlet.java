@@ -61,11 +61,9 @@ public class Outlet {
     @Email(message = "Email should be valid")
     private String email;
 
-    @Enumerated(EnumType.STRING)
     @Builder.Default
     private OutletStatus status = OutletStatus.ACTIVE;
 
-    @Enumerated(EnumType.STRING)
     @Builder.Default
     private OutletType type = OutletType.RETAIL;
 

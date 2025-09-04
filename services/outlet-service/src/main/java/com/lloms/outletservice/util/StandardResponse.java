@@ -1,4 +1,4 @@
-package com.lloms.outlet_service.util;
+package com.lloms.outletservice.util;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

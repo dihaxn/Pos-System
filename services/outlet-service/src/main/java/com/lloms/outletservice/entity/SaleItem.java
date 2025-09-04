@@ -71,4 +71,8 @@ public class SaleItem {
             }
         }
     }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
 }

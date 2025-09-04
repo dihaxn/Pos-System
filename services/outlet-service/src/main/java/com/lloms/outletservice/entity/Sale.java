@@ -69,11 +69,9 @@ public class Sale {
     @Field("total_amount")
     private BigDecimal totalAmount;
 
-    @Enumerated(EnumType.STRING)
     @Builder.Default
     private SaleStatus status = SaleStatus.COMPLETED;
 
-    @Enumerated(EnumType.STRING)
     @Field("payment_method")
     private PaymentMethod paymentMethod;
 
