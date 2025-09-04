@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: [pos-system, user-website, website]
+        app: [pos-system, user-website]
 
     steps:
       - name: Checkout code
@@ -169,7 +169,6 @@ jobs:
         run: |
           docker build -t lloms/pos-system:latest -f frontend/pos-system/Dockerfile frontend/pos-system/
           docker build -t lloms/user-website:latest -f frontend/user-website/Dockerfile frontend/user-website/
-          docker build -t lloms/website:latest -f frontend/website/Dockerfile frontend/website/
 
       - name: Build backend images
         run: |
