@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import CardContainer from "../../../shared/components/cardContainer/CardContainer";
 import OrderTable from "../../components/PosTable/OrderTable";
 import DisplayTotal from "../../../shared/components/DisplayTotal/DisplayTotal";
-import ItemCard from "../../../shared/components/ItemCard/ItemCard";
+import ItemCard from "../../../../shared/components/ItemCard/ItemCard";
 import ActionContainer from "../../../shared/components/ActionContainer/ActionContainer";
 import { getAllProductsByOutletId } from "../../../shared/services/productController";
 import LoadingWheel from "../../../shared/components/loadingWheel/LoadingWheel";
