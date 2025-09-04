@@ -71,7 +71,7 @@ const ShopPage = () => {
             </h3>
             {searchQuery && (
                 <p className="text-gray-600 mt-4">
-                  Showing results for: "{searchQuery}"
+                  Showing results for: &quot;{searchQuery}&quot;
                 </p>
             )}
           </div>

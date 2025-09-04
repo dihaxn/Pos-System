@@ -5,7 +5,6 @@ import {
   mockProducts, 
   mockOutlets, 
   getProductById, 
-  getProductsByCategory, 
   searchProducts,
   getOutletById 
 } from '../data/mockData';
@@ -214,15 +213,6 @@ export const useDelete = (url, options = {}) => {
   });
 };
 
-// Check if backend is available
-const isBackendAvailable = async () => {
-  try {
-    const response = await fetch(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1/health');
-    return response.ok;
-  } catch (error) {
-    return false;
-  }
-};
 
 // Custom hooks for specific API endpoints
 export const useProducts = (filters = {}) => {
@@ -263,9 +253,9 @@ export const useProducts = (filters = {}) => {
         log('debug', 'Fetching products from backend');
         const response = await axios.get(getApiUrl(url));
         return response.data;
-      } catch (error) {
+      } catch (_error) {
         // Fallback to mock data if backend fails
-        log('error', 'Backend failed, falling back to mock data', error);
+        log('error', 'Backend failed, falling back to mock data', _error);
         
         let filteredProducts = [...mockProducts];
         
@@ -299,7 +289,7 @@ export const useProduct = (id) => {
         // Try to fetch from backend first
         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1'}/products/${id}`);
         return response.data;
-      } catch (error) {
+      } catch (_error) {
         // Fallback to mock data
         console.log('Backend not available, using mock data');
         return getProductById(id);
@@ -361,7 +351,7 @@ export const useOutlets = (filters = {}) => {
         // Try to fetch from backend first
         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1'}${url}`);
         return response.data;
-      } catch (error) {
+      } catch (_error) {
         // Fallback to mock data
         console.log('Backend not available, using mock data');
         
@@ -399,7 +389,7 @@ export const useOutlet = (id) => {
         // Try to fetch from backend first
         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1'}/outlets/${id}`);
         return response.data;
-      } catch (error) {
+      } catch (_error) {
         // Fallback to mock data
         console.log('Backend not available, using mock data');
         return getOutletById(id);

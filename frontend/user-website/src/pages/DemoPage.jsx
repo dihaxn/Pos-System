@@ -144,7 +144,7 @@ const DemoPage = () => {
               <ul className="text-sm text-blue-800 space-y-1">
                 <li>• When you run the app, it tries to connect to your backend first</li>
                 <li>• If the backend is not available, it automatically falls back to mock data</li>
-                <li>• You can see this in the browser console with "Backend not available, using mock data"</li>
+                <li>• You can see this in the browser console with &quot;Backend not available, using mock data&quot;</li>
                 <li>• Once you connect your backend, it will automatically switch to real data</li>
                 <li>• No code changes needed - it's completely automatic!</li>
               </ul>

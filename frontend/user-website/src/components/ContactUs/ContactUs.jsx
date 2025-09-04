@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AiFillMail, AiFillPhone, AiOutlineComment } from "react-icons/ai";
+import { AiFillMail, AiFillPhone } from "react-icons/ai";
 import { BsFacebook } from "react-icons/bs";
 
 const ContactUs = () => {
@@ -82,7 +82,7 @@ const ContactUs = () => {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+            We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
           </p>
         </div>
 

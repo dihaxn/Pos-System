@@ -1,5 +1,5 @@
 
-import React from "react";
+import PropTypes from "prop-types";
 import defaultImage from "../../assets/Empty image.jpg";
 
 const Product_Card = ({ item }) => {
@@ -32,6 +32,15 @@ const Product_Card = ({ item }) => {
             </p>
         </div>
     );
+};
+
+Product_Card.propTypes = {
+  item: PropTypes.shape({
+    imageUrl: PropTypes.string,
+    productName: PropTypes.string,
+    name: PropTypes.string,
+    price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  }).isRequired,
 };
 
 export default Product_Card;
