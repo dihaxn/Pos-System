@@ -28,12 +28,6 @@ jobs:
           - name: user-website
             path: frontend/user-website
             dockerfile: frontend/user-website/Dockerfile
-          - name: product-service
-            path: services/product-service
-            dockerfile: services/product-service/Dockerfile
-          - name: user-service
-            path: services/user-service
-            dockerfile: services/user-service/Dockerfile
           - name: outlet-service
             path: services/outlet-service
             dockerfile: services/outlet-service/Dockerfile

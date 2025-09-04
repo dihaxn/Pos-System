@@ -159,7 +159,7 @@ jobs:
 
       - name: Build backend images
         run: |
-          for service in product-service user-service outlet-service reporting-service discovery-service api-gateway; do
+          for service in outlet-service reporting-service discovery-service api-gateway; do
             docker build -t lloms/$service:latest -f services/$service/Dockerfile services/$service/
           done
 
