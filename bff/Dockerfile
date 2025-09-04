@@ -6,7 +6,7 @@ WORKDIR /lloms_app
 
 # Copy package.json and install dependencies
 COPY package*.json ./
-RUN npm install --production
+RUN npm ci --omit=dev
 
 # Copy the rest of the application to the working directory
 COPY . .

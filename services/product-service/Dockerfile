@@ -1,5 +1,5 @@
 # Multi-stage build for optimized production image
-FROM maven:3.9.6-openjdk-17-slim AS build
+FROM maven:3.9.6-openjdk-21-slim AS build
 
 # Set working directory
 WORKDIR /app
@@ -12,7 +12,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Production stage
-FROM openjdk:17-jre-slim
+FROM openjdk:21-jre-slim
 
 # Install necessary packages
 RUN apt-get update && \
