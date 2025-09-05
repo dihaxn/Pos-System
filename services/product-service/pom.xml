@@ -211,6 +211,12 @@
                 <artifactId>commons-fileupload</artifactId>
                 <version>1.6.0</version>
             </dependency>
+            <!-- Fix Spring Framework MVC path traversal vulnerability CVE-2025-41242 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>6.2.10</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

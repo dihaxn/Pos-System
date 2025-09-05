@@ -161,6 +161,12 @@
                 <artifactId>httpclient5</artifactId>
                 <version>5.4.3</version>
             </dependency>
+            <!-- Fix Spring Security authorization bypass CVE-2025-22223 -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>6.4.4</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
