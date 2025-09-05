@@ -197,6 +197,12 @@
                 <artifactId>spring-webmvc</artifactId>
                 <version>6.2.10</version>
             </dependency>
+            <!-- Fix Spring Web reflected download attack CVE-2025-41234 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>6.2.8</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 

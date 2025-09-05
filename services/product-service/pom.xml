@@ -193,6 +193,30 @@
                 <artifactId>spring-security-core</artifactId>
                 <version>6.4.4</version>
             </dependency>
+            <!-- Fix Spring Web reflected download attack CVE-2025-41234 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>6.2.8</version>
+            </dependency>
+            <!-- Fix Apache Commons Lang uncontrolled recursion CVE-2025-48924 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.18.0</version>
+            </dependency>
+            <!-- Fix Netty common DoS attack CVE-2025-25193 -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-common</artifactId>
+                <version>4.1.118.Final</version>
+            </dependency>
+            <!-- Fix Netty codec compression zip bomb CVE-2025-58057 -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec</artifactId>
+                <version>4.1.125.Final</version>
+            </dependency>
             <!-- Fix Logback arbitrary code execution CVE-2024-12798 -->
             <dependency>
                 <groupId>ch.qos.logback</groupId>
