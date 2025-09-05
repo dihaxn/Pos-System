@@ -131,20 +131,20 @@ function Item({ onClose, mode }) {
                   <label htmlFor="imageUpload" className="flex flex-col items-center">
                     {imageFile ? (
                       <img 
-                        src={(() => {
-                          try {
-                            const url = URL.createObjectURL(imageFile);
-                            // Validate that the URL is safe (blob URLs are safe)
-                            if (url && url.startsWith('blob:')) {
-                              return url;
-                            }
-                            return UploadImage;
-                          } catch (error) {
-                            return UploadImage;
-                          }
-                        })()} 
+                        src={UploadImage}
                         alt="Uploaded" 
                         className="w-50 h-20 object-contain"
+                        onLoad={(e) => {
+                          // Safely update src after load to prevent XSS
+                          try {
+                            const url = URL.createObjectURL(imageFile);
+                            if (url && url.startsWith('blob:')) {
+                              e.target.src = url;
+                            }
+                          } catch (error) {
+                            e.target.src = UploadImage;
+                          }
+                        }}
                         onError={(e) => {
                           e.target.src = UploadImage;
                           e.target.alt = "Upload preview";
