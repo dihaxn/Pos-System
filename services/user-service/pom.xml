@@ -205,6 +205,24 @@
                 <artifactId>logback-core</artifactId>
                 <version>1.5.13</version>
             </dependency>
+            <!-- Fix Spring Framework MVC path traversal CVE-2025-41242 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>6.2.10</version>
+            </dependency>
+            <!-- Fix Spring Web reflected download attack CVE-2025-41234 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>6.2.8</version>
+            </dependency>
+            <!-- Fix Apache Commons Lang uncontrolled recursion CVE-2025-48924 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.18.0</version>
+            </dependency>
             <!-- Fix Spring Boot EndpointRequest matcher CVE-2025-22235 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>

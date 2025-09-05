@@ -215,6 +215,12 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>3.18.0</version>
             </dependency>
+            <!-- Fix Netty codec compression zip bomb CVE-2025-58057 -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-codec</artifactId>
+                <version>4.1.125.Final</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

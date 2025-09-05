@@ -149,6 +149,7 @@ function Item({ onClose, mode }) {
                           e.target.src = UploadImage;
                           e.target.alt = "Upload preview";
                         }}
+                        crossOrigin="anonymous"
                       />
                     ) : (
                       <img src={UploadImage} alt="Upload preview" className="w-16 h-16 object-contain" />
