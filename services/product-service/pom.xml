@@ -172,6 +172,12 @@
                 <artifactId>tomcat-embed-el</artifactId>
                 <version>10.1.34</version>
             </dependency>
+            <!-- Fix Spring Security BCryptPasswordEncoder password length CVE-2025-22228 -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-crypto</artifactId>
+                <version>6.4.4</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
