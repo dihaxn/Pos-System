@@ -217,6 +217,12 @@
                 <artifactId>spring-webmvc</artifactId>
                 <version>6.2.10</version>
             </dependency>
+            <!-- Fix PostgreSQL JDBC authentication vulnerability CVE-2025-49146 -->
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>42.7.7</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

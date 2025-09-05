@@ -167,6 +167,18 @@
                 <artifactId>spring-security-core</artifactId>
                 <version>6.4.4</version>
             </dependency>
+            <!-- Fix Spring Security BCryptPasswordEncoder password length CVE-2025-22228 -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-crypto</artifactId>
+                <version>6.4.4</version>
+            </dependency>
+            <!-- Fix Spring Boot EndpointRequest matcher CVE-2025-22235 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot</artifactId>
+                <version>3.4.5</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
