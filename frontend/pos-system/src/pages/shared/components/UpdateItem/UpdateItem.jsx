@@ -167,6 +167,21 @@ export default function UpdateItem({ item, onClose }) {
     }
     return UploadImage;
   })();
+  
+  // Create a safe image element to prevent XSS
+  const createSafeImageSrc = (src) => {
+    try {
+      // Validate URL format
+      if (src && typeof src === 'string') {
+        if (src.startsWith('blob:') || src.startsWith('http://') || src.startsWith('https://')) {
+          return src;
+        }
+      }
+      return UploadImage;
+    } catch (error) {
+      return UploadImage;
+    }
+  };
 
   return (
     <div className="fixed inset-0 backdrop-blur-sm flex justify-center items-center z-50">
@@ -274,7 +289,7 @@ export default function UpdateItem({ item, onClose }) {
                 <div className="md:w-[250px] h-[130px] border-2 border-gray-300 bg-gray-100 rounded-lg flex flex-col items-center justify-center cursor-pointer">
                   <label htmlFor="imageUpload" className="flex flex-col items-center">
                     <img 
-                      src={safeImageSrc} 
+                      src={createSafeImageSrc(safeImageSrc)} 
                       alt="Product" 
                       className="w-50 h-20 object-contain"
                       onError={(e) => {

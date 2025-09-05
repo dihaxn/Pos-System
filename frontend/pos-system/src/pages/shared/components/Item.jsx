@@ -150,6 +150,7 @@ function Item({ onClose, mode }) {
                           e.target.alt = "Upload preview";
                         }}
                         crossOrigin="anonymous"
+                        loading="lazy"
                       />
                     ) : (
                       <img src={UploadImage} alt="Upload preview" className="w-16 h-16 object-contain" />
