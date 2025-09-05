@@ -13,9 +13,9 @@ export const sanitizeHTML = (html) => {
   let sanitized = html;
   
   // Remove script tags and their content (with global flag for multiple occurrences)
-  // Fixed regex to handle script tags with spaces, tabs, and newlines: </script >, </script\t\n bar>, etc.
-  while (sanitized.match(/<script\b[^<]*(?:(?!<\/script\s*>)<[^<]*)*<\/script\s*>/gi)) {
-    sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script\s*>)<[^<]*)*<\/script\s*>/gi, '');
+  // Enhanced regex to handle script tags with any whitespace, tabs, and newlines: </script >, </script\t\n bar>, etc.
+  while (sanitized.match(/<script\b[^<]*(?:(?!<\/script[\s\S]*?>)<[^<]*)*<\/script[\s\S]*?>/gi)) {
+    sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script[\s\S]*?>)<[^<]*)*<\/script[\s\S]*?>/gi, '');
   }
   
   // Remove javascript: protocol (with global flag for multiple occurrences)
@@ -187,9 +187,9 @@ export const validateAndSanitizeInput = (input, type = 'text') => {
     case 'text':
     default:
       // Remove HTML tags but allow basic formatting (with global flag for multiple occurrences)
-      // Fixed regex to handle script tags with spaces, tabs, and newlines: </script >, </script\t\n bar>, etc.
-      while (sanitized.match(/<script\b[^<]*(?:(?!<\/script\s*>)<[^<]*)*<\/script\s*>/gi)) {
-        sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script\s*>)<[^<]*)*<\/script\s*>/gi, '');
+      // Enhanced regex to handle script tags with any whitespace, tabs, and newlines: </script >, </script\t\n bar>, etc.
+      while (sanitized.match(/<script\b[^<]*(?:(?!<\/script[\s\S]*?>)<[^<]*)*<\/script[\s\S]*?>/gi)) {
+        sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script[\s\S]*?>)<[^<]*)*<\/script[\s\S]*?>/gi, '');
       }
       while (sanitized.match(/javascript:/gi)) {
         sanitized = sanitized.replace(/javascript:/gi, '');
@@ -228,8 +228,8 @@ export const containsMaliciousContent = (input) => {
   if (!input || typeof input !== 'string') return false;
   
   const maliciousPatterns = [
-    // Fixed regex to handle script tags with spaces, tabs, and newlines: </script >, </script\t\n bar>, etc.
-    /<script\b[^<]*(?:(?!<\/script\s*>)<[^<]*)*<\/script\s*>/gi,
+    // Enhanced regex to handle script tags with any whitespace, tabs, and newlines: </script >, </script\t\n bar>, etc.
+    /<script\b[^<]*(?:(?!<\/script[\s\S]*?>)<[^<]*)*<\/script[\s\S]*?>/gi,
     /javascript:/gi,
     /on\w+\s*=/gi,
     /<iframe\b/gi,

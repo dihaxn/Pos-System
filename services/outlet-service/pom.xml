@@ -185,6 +185,12 @@
                 <artifactId>netty-handler</artifactId>
                 <version>4.1.118.Final</version>
             </dependency>
+            <!-- Fix Netty common DoS vulnerability CVE-2025-25193 -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-common</artifactId>
+                <version>4.1.118.Final</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
