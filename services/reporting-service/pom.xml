@@ -149,6 +149,18 @@
 				<artifactId>netty-codec-http</artifactId>
 				<version>4.1.125.Final</version>
 			</dependency>
+			<!-- Fix Spring Boot EndpointRequest matcher CVE-2025-22235 -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot</artifactId>
+				<version>3.4.5</version>
+			</dependency>
+			<!-- Fix PostgreSQL JDBC authentication vulnerability CVE-2025-49146 -->
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>42.7.7</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
