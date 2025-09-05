@@ -85,6 +85,24 @@
                 <artifactId>logback-core</artifactId>
                 <version>1.5.13</version>
             </dependency>
+            <!-- Fix Apache HttpComponents PSL validation bypass CVE-2025-27820 -->
+            <dependency>
+                <groupId>org.apache.httpcomponents.client5</groupId>
+                <artifactId>httpclient5</artifactId>
+                <version>5.4.3</version>
+            </dependency>
+            <!-- Fix Spring Security BCryptPasswordEncoder password length CVE-2025-22228 -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-crypto</artifactId>
+                <version>6.4.4</version>
+            </dependency>
+            <!-- Fix Spring Boot EndpointRequest matcher CVE-2025-22235 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot</artifactId>
+                <version>3.4.5</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
