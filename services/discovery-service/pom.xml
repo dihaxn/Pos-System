@@ -103,6 +103,12 @@
                 <artifactId>spring-boot</artifactId>
                 <version>3.4.5</version>
             </dependency>
+            <!-- Fix XStream DoS vulnerability CVE-2024-47072 -->
+            <dependency>
+                <groupId>com.thoughtworks.xstream</groupId>
+                <artifactId>xstream</artifactId>
+                <version>1.4.21</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
