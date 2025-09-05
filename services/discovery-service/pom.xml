@@ -116,7 +116,18 @@
                 <version>6.2.7</version>
             </dependency>
             <!-- Fix Apache Commons Configuration resource consumption CVE-2025-46392 -->
-            <!-- Upgrade to 2.x version which fixes the vulnerability -->
+            <!-- Exclude old 1.x version and use 2.x version which fixes the vulnerability -->
+            <dependency>
+                <groupId>commons-configuration</groupId>
+                <artifactId>commons-configuration</artifactId>
+                <version>1.10</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>*</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-configuration2</artifactId>

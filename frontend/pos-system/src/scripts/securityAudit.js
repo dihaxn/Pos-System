@@ -120,7 +120,7 @@ function auditFile(filePath, fileType) {
       },
       {
         name: 'Inline scripts',
-        pattern: /<script[^>]*>/g,
+        pattern: /<script[^>]*>/gi, // Added case-insensitive flag to match <SCRIPT> tags
         level: 'FAIL',
         message: 'Inline scripts found - security risk'
       },

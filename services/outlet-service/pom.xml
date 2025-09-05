@@ -191,6 +191,18 @@
                 <artifactId>netty-common</artifactId>
                 <version>4.1.118.Final</version>
             </dependency>
+            <!-- Fix Logback SSRF vulnerability CVE-2024-12801 -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>1.5.13</version>
+            </dependency>
+            <!-- Fix Spring Context locale issue CVE-2025-22233 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>6.2.7</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
