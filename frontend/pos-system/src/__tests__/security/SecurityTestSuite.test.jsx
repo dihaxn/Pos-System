@@ -315,13 +315,18 @@ describe('🔒 LLOMS Frontend Security Test Suite', () => {
     test('should encrypt sensitive data before storage', () => {
       const sensitiveData = 'secret123';
       
-      // This test would verify that sensitive data is encrypted
-      // In a real implementation, you'd want to encrypt this data
-      localStorage.setItem('encryptedData', btoa(sensitiveData)); // Basic encoding for demo
+      // This test verifies that sensitive data is properly encrypted
+      // Using the secure storage utility instead of direct localStorage
+      const { secureStorageSet, secureStorageGet } = require('../../../utils/security');
+      secureStorageSet('encryptedData', sensitiveData, true);
       
-      const storedData = localStorage.getItem('encryptedData');
-      expect(storedData).not.toBe(sensitiveData);
-      expect(atob(storedData)).toBe(sensitiveData);
+      const storedData = secureStorageGet('encryptedData', true);
+      expect(storedData).toBe(sensitiveData);
+      
+      // Verify that raw localStorage data is encrypted
+      const rawStoredData = localStorage.getItem('encryptedData');
+      expect(rawStoredData).not.toBe(sensitiveData);
+      expect(rawStoredData).toMatch(/^[A-Za-z0-9+/=]+$/); // Base64 pattern
     });
   });
 

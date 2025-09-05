@@ -10,25 +10,43 @@
 export const sanitizeHTML = (html) => {
   if (!html || typeof html !== 'string') return '';
   
-  // Remove script tags and their content
-  html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+  let sanitized = html;
   
-  // Remove javascript: protocol
-  html = html.replace(/javascript:/gi, '');
+  // Remove script tags and their content (with global flag for multiple occurrences)
+  while (sanitized.match(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi)) {
+    sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+  }
   
-  // Remove on* event handlers
-  html = html.replace(/\son\w+\s*=\s*["'][^"']*["']/gi, '');
+  // Remove javascript: protocol (with global flag for multiple occurrences)
+  while (sanitized.match(/javascript:/gi)) {
+    sanitized = sanitized.replace(/javascript:/gi, '');
+  }
   
-  // Remove iframe tags
-  html = html.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
+  // Remove on* event handlers (with global flag for multiple occurrences)
+  while (sanitized.match(/\son\w+\s*=\s*["'][^"']*["']/gi)) {
+    sanitized = sanitized.replace(/\son\w+\s*=\s*["'][^"']*["']/gi, '');
+  }
   
-  // Remove object tags
-  html = html.replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '');
+  // Remove iframe tags (with global flag for multiple occurrences)
+  while (sanitized.match(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi)) {
+    sanitized = sanitized.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
+  }
   
-  // Remove embed tags
-  html = html.replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '');
+  // Remove object tags (with global flag for multiple occurrences)
+  while (sanitized.match(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi)) {
+    sanitized = sanitized.replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '');
+  }
   
-  return html;
+  // Remove embed tags (with global flag for multiple occurrences)
+  while (sanitized.match(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi)) {
+    sanitized = sanitized.replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '');
+  }
+  
+  // Remove data: and vbscript: protocols
+  sanitized = sanitized.replace(/data:/gi, '');
+  sanitized = sanitized.replace(/vbscript:/gi, '');
+  
+  return sanitized;
 };
 
 /**
@@ -138,10 +156,17 @@ export const validateAndSanitizeInput = (input, type = 'text') => {
   
   switch (type) {
     case 'email':
-      // Remove any HTML tags from email
-      sanitized = sanitized.replace(/<[^>]*>/g, '');
-      // Remove any script content
-      sanitized = sanitized.replace(/javascript:/gi, '');
+      // Remove any HTML tags from email (with global flag for multiple occurrences)
+      while (sanitized.match(/<[^>]*>/g)) {
+        sanitized = sanitized.replace(/<[^>]*>/g, '');
+      }
+      // Remove any script content (with global flag for multiple occurrences)
+      while (sanitized.match(/javascript:/gi)) {
+        sanitized = sanitized.replace(/javascript:/gi, '');
+      }
+      // Remove data: and vbscript: protocols
+      sanitized = sanitized.replace(/data:/gi, '');
+      sanitized = sanitized.replace(/vbscript:/gi, '');
       break;
       
     case 'url':
@@ -149,15 +174,27 @@ export const validateAndSanitizeInput = (input, type = 'text') => {
       if (sanitized && !sanitized.match(/^https?:\/\//)) {
         sanitized = 'https://' + sanitized;
       }
-      // Remove any script content
-      sanitized = sanitized.replace(/javascript:/gi, '');
+      // Remove any script content (with global flag for multiple occurrences)
+      while (sanitized.match(/javascript:/gi)) {
+        sanitized = sanitized.replace(/javascript:/gi, '');
+      }
+      // Remove data: and vbscript: protocols
+      sanitized = sanitized.replace(/data:/gi, '');
+      sanitized = sanitized.replace(/vbscript:/gi, '');
       break;
       
     case 'text':
     default:
-      // Remove HTML tags but allow basic formatting
-      sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-      sanitized = sanitized.replace(/javascript:/gi, '');
+      // Remove HTML tags but allow basic formatting (with global flag for multiple occurrences)
+      while (sanitized.match(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi)) {
+        sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+      }
+      while (sanitized.match(/javascript:/gi)) {
+        sanitized = sanitized.replace(/javascript:/gi, '');
+      }
+      // Remove data: and vbscript: protocols
+      sanitized = sanitized.replace(/data:/gi, '');
+      sanitized = sanitized.replace(/vbscript:/gi, '');
       break;
   }
   
