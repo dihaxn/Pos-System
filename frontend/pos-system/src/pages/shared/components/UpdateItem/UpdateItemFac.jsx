@@ -111,10 +111,36 @@ export default function UpdateItemFac({ item, onClose }) {
   };
 
   const imageName = product.imageUrl ? product.imageUrl.split("\\").pop() : null;
+  
+  // Sanitize image source to prevent XSS
+  const sanitizeImageSrc = (src) => {
+    if (!src || typeof src !== 'string') return UploadImage;
+    
+    let sanitized = src;
+    
+    // Remove script tags with while loop for complete sanitization
+    while (sanitized.match(/<script\b[^<]*(?:(?!<\/script[\s\S]*?>)<[^<]*)*<\/script[\s\S]*?>/gi)) {
+      sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script[\s\S]*?>)<[^<]*)*<\/script[\s\S]*?>/gi, '');
+    }
+    
+    // Remove dangerous protocols with while loop for complete sanitization
+    while (sanitized.match(/javascript:/gi)) {
+      sanitized = sanitized.replace(/javascript:/gi, '');
+    }
+    while (sanitized.match(/data:/gi)) {
+      sanitized = sanitized.replace(/data:/gi, '');
+    }
+    while (sanitized.match(/vbscript:/gi)) {
+      sanitized = sanitized.replace(/vbscript:/gi, '');
+    }
+    
+    return sanitized;
+  };
+  
   const imageSrc = selectedImage
     ? URL.createObjectURL(selectedImage)
     : imageName
-    ? `http://localhost:8080/api/v1/product/url/${imageName}`
+    ? sanitizeImageSrc(`http://localhost:8080/api/v1/product/url/${imageName}`)
     : UploadImage;
 
   return (
@@ -215,6 +241,10 @@ export default function UpdateItemFac({ item, onClose }) {
                     src={imageSrc}
                     alt="Product"
                     className="w-50 h-20 object-contain"
+                    onError={(e) => {
+                      e.target.src = UploadImage;
+                      e.target.alt = "Upload preview";
+                    }}
                   />
                 </label>
                 <input
