@@ -79,6 +79,12 @@
                 <artifactId>tomcat-embed-el</artifactId>
                 <version>10.1.34</version>
             </dependency>
+            <!-- Fix Logback SSRF vulnerability CVE-2024-12801 -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>1.5.13</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
