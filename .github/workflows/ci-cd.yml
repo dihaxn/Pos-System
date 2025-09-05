@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+  packages: read
+  security-events: write
+  actions: read
+
 env:
   NODE_VERSION: "20"
   JAVA_VERSION: "21"
