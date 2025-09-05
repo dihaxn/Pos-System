@@ -130,28 +130,18 @@ function Item({ onClose, mode }) {
                 <div className="md:w-[250px] sm:w-[150px] w-[100px] h-[130px] border-2 border-gray-300 bg-gray-100 rounded-lg flex flex-col items-center justify-center cursor-pointer">
                   <label htmlFor="imageUpload" className="flex flex-col items-center">
                     {imageFile ? (
-                      <img 
-                        src={UploadImage}
-                        alt="Uploaded" 
-                        className="w-50 h-20 object-contain"
-                        onLoad={(e) => {
-                          // Safely update src after load to prevent XSS
-                          try {
-                            const url = URL.createObjectURL(imageFile);
-                            if (url && url.startsWith('blob:')) {
-                              e.target.src = url;
-                            }
-                          } catch (error) {
-                            e.target.src = UploadImage;
-                          }
-                        }}
-                        onError={(e) => {
-                          e.target.src = UploadImage;
-                          e.target.alt = "Upload preview";
-                        }}
-                        crossOrigin="anonymous"
-                        loading="lazy"
-                      />
+                      <div className="w-50 h-20 object-contain flex items-center justify-center">
+                        <img 
+                          src={UploadImage}
+                          alt="Uploaded" 
+                          className="w-50 h-20 object-contain"
+                          crossOrigin="anonymous"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white text-sm">
+                          File Selected
+                        </div>
+                      </div>
                     ) : (
                       <img src={UploadImage} alt="Upload preview" className="w-16 h-16 object-contain" />
                     )}

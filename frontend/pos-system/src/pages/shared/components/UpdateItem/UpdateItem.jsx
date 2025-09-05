@@ -291,22 +291,18 @@ export default function UpdateItem({ item, onClose }) {
                 <label className="text-gray-700 text-lg font-medium ml-5">Photo</label>
                 <div className="md:w-[250px] h-[130px] border-2 border-gray-300 bg-gray-100 rounded-lg flex flex-col items-center justify-center cursor-pointer">
                   <label htmlFor="imageUpload" className="flex flex-col items-center">
-                    <img 
-                      src={staticSafeImageSrc} 
-                      alt="Product" 
-                      className="w-50 h-20 object-contain"
-                      onLoad={(e) => {
-                        // Safely update src after load to prevent XSS
-                        const safeSrc = createSafeImageSrc(safeImageSrc);
-                        if (safeSrc !== staticSafeImageSrc) {
-                          e.target.src = safeSrc;
-                        }
-                      }}
-                      onError={(e) => {
-                        e.target.src = UploadImage;
-                        e.target.alt = "Upload preview";
-                      }}
-                    />
+                    <div className="w-50 h-20 object-contain flex items-center justify-center relative">
+                      <img 
+                        src={staticSafeImageSrc} 
+                        alt="Product" 
+                        className="w-50 h-20 object-contain"
+                      />
+                      {selectedImage && (
+                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white text-sm">
+                          New Image Selected
+                        </div>
+                      )}
+                    </div>
                   </label>
                   <input
                     id="imageUpload"
