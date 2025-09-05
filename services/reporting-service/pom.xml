@@ -191,6 +191,12 @@
                 <artifactId>spring-context</artifactId>
                 <version>6.2.7</version>
             </dependency>
+            <!-- Fix Spring Framework MVC path traversal CVE-2025-41242 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>6.2.10</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 

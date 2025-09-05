@@ -185,6 +185,12 @@
                 <artifactId>spring-boot</artifactId>
                 <version>3.4.5</version>
             </dependency>
+            <!-- Fix Spring Web reflected download attack CVE-2025-41234 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>6.2.8</version>
+            </dependency>
             <!-- Fix Netty HTTP/2 DDoS vulnerability CVE-2025-55163 -->
             <dependency>
                 <groupId>io.netty</groupId>

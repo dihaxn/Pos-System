@@ -142,6 +142,16 @@ export default function UpdateItemFac({ item, onClose }) {
     : imageName
     ? sanitizeImageSrc(`http://localhost:8080/api/v1/product/url/${imageName}`)
     : UploadImage;
+  
+  // Additional validation to ensure imageSrc is safe
+  const safeImageSrc = (() => {
+    if (!imageSrc || typeof imageSrc !== 'string') return UploadImage;
+    // Only allow http/https URLs or data URLs for uploaded files
+    if (imageSrc.startsWith('blob:') || imageSrc.startsWith('http://') || imageSrc.startsWith('https://')) {
+      return imageSrc;
+    }
+    return UploadImage;
+  })();
 
   return (
     <div className="fixed inset-0 backdrop-blur-sm flex justify-center items-center z-50">
@@ -238,7 +248,7 @@ export default function UpdateItemFac({ item, onClose }) {
               <div className="w-full h-[130px] border-2 border-gray-300 bg-gray-100 rounded-lg flex flex-col items-center justify-center cursor-pointer">
                 <label htmlFor="imageUpload" className="flex flex-col items-center">
                   <img
-                    src={imageSrc}
+                    src={safeImageSrc}
                     alt="Product"
                     className="w-50 h-20 object-contain"
                     onError={(e) => {

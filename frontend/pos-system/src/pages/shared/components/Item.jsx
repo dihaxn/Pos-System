@@ -131,7 +131,18 @@ function Item({ onClose, mode }) {
                   <label htmlFor="imageUpload" className="flex flex-col items-center">
                     {imageFile ? (
                       <img 
-                        src={URL.createObjectURL(imageFile)} 
+                        src={(() => {
+                          try {
+                            const url = URL.createObjectURL(imageFile);
+                            // Validate that the URL is safe (blob URLs are safe)
+                            if (url && url.startsWith('blob:')) {
+                              return url;
+                            }
+                            return UploadImage;
+                          } catch (error) {
+                            return UploadImage;
+                          }
+                        })()} 
                         alt="Uploaded" 
                         className="w-50 h-20 object-contain"
                         onError={(e) => {
