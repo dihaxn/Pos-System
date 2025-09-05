@@ -130,7 +130,15 @@ function Item({ onClose, mode }) {
                 <div className="md:w-[250px] sm:w-[150px] w-[100px] h-[130px] border-2 border-gray-300 bg-gray-100 rounded-lg flex flex-col items-center justify-center cursor-pointer">
                   <label htmlFor="imageUpload" className="flex flex-col items-center">
                     {imageFile ? (
-                      <img src={URL.createObjectURL(imageFile)} alt="Uploaded" className="w-50 h-20 object-contain" />
+                      <img 
+                        src={URL.createObjectURL(imageFile)} 
+                        alt="Uploaded" 
+                        className="w-50 h-20 object-contain"
+                        onError={(e) => {
+                          e.target.src = UploadImage;
+                          e.target.alt = "Upload preview";
+                        }}
+                      />
                     ) : (
                       <img src={UploadImage} alt="Upload preview" className="w-16 h-16 object-contain" />
                     )}

@@ -130,11 +130,26 @@ export default function UpdateItem({ item, onClose }) {
   // Sanitize image source to prevent XSS
   const sanitizeImageSrc = (src) => {
     if (!src || typeof src !== 'string') return UploadImage;
-    // Remove any potential script tags or javascript: protocols
-    return src.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-              .replace(/javascript:/gi, '')
-              .replace(/data:/gi, '')
-              .replace(/vbscript:/gi, '');
+    
+    let sanitized = src;
+    
+    // Remove script tags with while loop for complete sanitization
+    while (sanitized.match(/<script\b[^<]*(?:(?!<\/script[\s\S]*?>)<[^<]*)*<\/script[\s\S]*?>/gi)) {
+      sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script[\s\S]*?>)<[^<]*)*<\/script[\s\S]*?>/gi, '');
+    }
+    
+    // Remove dangerous protocols with while loop for complete sanitization
+    while (sanitized.match(/javascript:/gi)) {
+      sanitized = sanitized.replace(/javascript:/gi, '');
+    }
+    while (sanitized.match(/data:/gi)) {
+      sanitized = sanitized.replace(/data:/gi, '');
+    }
+    while (sanitized.match(/vbscript:/gi)) {
+      sanitized = sanitized.replace(/vbscript:/gi, '');
+    }
+    
+    return sanitized;
   };
   
   const imageSrc = selectedImage
