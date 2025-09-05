@@ -126,10 +126,21 @@ export default function UpdateItem({ item, onClose }) {
   };
 
   const imageName = product.imageUrl ? product.imageUrl.split("\\").pop() : null;
+  
+  // Sanitize image source to prevent XSS
+  const sanitizeImageSrc = (src) => {
+    if (!src || typeof src !== 'string') return UploadImage;
+    // Remove any potential script tags or javascript: protocols
+    return src.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+              .replace(/javascript:/gi, '')
+              .replace(/data:/gi, '')
+              .replace(/vbscript:/gi, '');
+  };
+  
   const imageSrc = selectedImage
     ? URL.createObjectURL(selectedImage)
     : imageName
-    ? `http://localhost:8080/api/v1/product/url/${imageName}`
+    ? sanitizeImageSrc(`http://localhost:8080/api/v1/product/url/${imageName}`)
     : UploadImage;
 
   return (

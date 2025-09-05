@@ -193,6 +193,12 @@
                 <artifactId>logback-core</artifactId>
                 <version>1.5.13</version>
             </dependency>
+            <!-- Fix Spring Context locale issue CVE-2025-22233 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>6.2.7</version>
+            </dependency>
             <!-- Fix Spring Boot EndpointRequest matcher CVE-2025-22235 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>

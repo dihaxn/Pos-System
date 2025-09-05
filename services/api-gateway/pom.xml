@@ -197,6 +197,18 @@
                 <artifactId>netty-handler</artifactId>
                 <version>4.1.118.Final</version>
             </dependency>
+            <!-- Fix Reactor Netty credential leak CVE-2025-22227 -->
+            <dependency>
+                <groupId>io.projectreactor.netty</groupId>
+                <artifactId>reactor-netty-http</artifactId>
+                <version>1.2.8</version>
+            </dependency>
+            <!-- Fix Netty common DoS vulnerability CVE-2025-25193 -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-common</artifactId>
+                <version>4.1.118.Final</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
