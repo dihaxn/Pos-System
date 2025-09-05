@@ -4,8 +4,8 @@ package com.lloms.productservice.entity;
  * Enum representing the type of stock movement
  */
 public enum StockMovementType {
-    IN("Stock In"),
-    OUT("Stock Out"),
+    INBOUND("Stock In"),
+    OUTBOUND("Stock Out"),
     ADJUSTMENT("Stock Adjustment"),
     RETURN("Return"),
     DAMAGE("Damage"),
