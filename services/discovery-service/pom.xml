@@ -109,6 +109,18 @@
                 <artifactId>xstream</artifactId>
                 <version>1.4.21</version>
             </dependency>
+            <!-- Fix Spring Context locale issue CVE-2025-22233 -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>6.2.7</version>
+            </dependency>
+            <!-- Fix Apache Commons Configuration resource consumption CVE-2025-46392 -->
+            <dependency>
+                <groupId>commons-configuration</groupId>
+                <artifactId>commons-configuration</artifactId>
+                <version>1.10</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
