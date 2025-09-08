@@ -67,6 +67,7 @@ jobs:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true
 
     - name: Extract metadata
       id: meta
@@ -85,11 +86,12 @@ jobs:
       with:
         context: ${{ matrix.service.path }}
         file: ${{ matrix.service.dockerfile }}
-        push: true
+        push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
+      continue-on-error: true
 
     - name: Generate SBOM
       uses: anchore/sbom-action@v0

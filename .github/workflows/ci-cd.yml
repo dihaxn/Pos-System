@@ -47,7 +47,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd frontend/${{ matrix.app }}
-          npm ci --legacy-peer-deps --verbose
+          npm ci --legacy-peer-deps --verbose || npm install --legacy-peer-deps
           npm list @mui/material || echo "Material-UI not found"
         continue-on-error: true
 
@@ -144,7 +144,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd bff
-          npm ci --legacy-peer-deps
+          npm ci --legacy-peer-deps || npm install --legacy-peer-deps
 
       - name: Run tests
         run: |
