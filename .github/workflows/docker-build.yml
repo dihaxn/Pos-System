@@ -44,6 +44,12 @@ jobs:
           - name: api-gateway
             path: services/api-gateway
             dockerfile: services/api-gateway/Dockerfile
+          - name: product-service
+            path: services/product-service
+            dockerfile: services/product-service/Dockerfile
+          - name: user-service
+            path: services/user-service
+            dockerfile: services/user-service/Dockerfile
           - name: bff
             path: bff
             dockerfile: bff/Dockerfile

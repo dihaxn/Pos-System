@@ -80,7 +80,7 @@ jobs:
       - name: Build Java services
         if: matrix.language == 'java'
         run: |
-          for service in  outlet-service reporting-service discovery-service api-gateway; do
+          for service in outlet-service reporting-service discovery-service api-gateway product-service user-service; do
             if [ -d "services/$service" ] && [ -f "services/$service/pom.xml" ]; then
               echo "Building $service..."
               cd services/$service
@@ -147,7 +147,7 @@ jobs:
 
       - name: Run OWASP Dependency Check
         run: |
-          for service in  outlet-service reporting-service discovery-service api-gateway; do
+          for service in outlet-service reporting-service discovery-service api-gateway product-service user-service; do
             cd services/$service
             mvn org.owasp:dependency-check-maven:check || echo "Security issues found in $service"
             cd ../..
