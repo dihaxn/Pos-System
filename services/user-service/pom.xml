@@ -19,7 +19,7 @@
     <description>User Service for LLOMS - Authentication, Authorization, and User Management</description>
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>24</java.version>
         <spring-cloud.version>2023.0.4</spring-cloud.version>
         <modelmapper.version>3.2.1</modelmapper.version>
         <jjwt.version>0.12.6</jjwt.version>
