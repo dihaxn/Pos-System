@@ -165,7 +165,7 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
-                <version>6.4.4</version>
+                <version>6.4.10</version>
             </dependency>
             <!-- Fix Spring Security BCryptPasswordEncoder password length CVE-2025-22228 -->
             <dependency>
